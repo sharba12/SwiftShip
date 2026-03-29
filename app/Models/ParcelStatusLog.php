@@ -3,17 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ParcelStatusLog extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'parcel_id',
-        'status',
-        'remarks',
-        'latitude',
-        'longitude',
+        'old_status',
+        'new_status',
+        'changed_by',
+        'notes',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function parcel()
+    {
+        return $this->belongsTo(Parcel::class);
+    }
+
+    public function changedBy()
+    {
+        return $this->belongsTo(User::class, 'changed_by');
+    }
 }

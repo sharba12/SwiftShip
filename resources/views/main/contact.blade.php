@@ -68,7 +68,7 @@
             <div class="col-lg-5 fade-up delay-1">
                 <div class="d-flex flex-column gap-3 mb-4">
                     <div class="contact-info-card">
-                        <div class="contact-info-icon" style="background:rgba(14,165,233,0.1);color:#0ea5e9;">
+                        <div class="contact-info-icon" style="background:rgba(14,165,233,0.1);color:var(--color-primary);">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
                             </svg>
@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="contact-info-card">
-                        <div class="contact-info-icon" style="background:rgba(52,211,153,0.1);color:#34d399;">
+                        <div class="contact-info-icon" style="background:rgba(52,211,153,0.1);color:var(--color-success);">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                             </svg>
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="contact-info-card">
-                        <div class="contact-info-icon" style="background:rgba(251,191,36,0.1);color:#fbbf24;">
+                        <div class="contact-info-icon" style="background:rgba(251,191,36,0.1);color:var(--color-warning);">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
                             </svg>
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="contact-info-card">
-                        <div class="contact-info-icon" style="background:rgba(167,139,250,0.1);color:#a78bfa;">
+                        <div class="contact-info-icon" style="background:rgba(167,139,250,0.1);color:var(--color-violet);">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                             </svg>
@@ -147,15 +147,15 @@
 </section>
 
 <style>
-.section-dark   { background: #0d1117; }
-.section-deeper { background: #080c12; }
+.section-dark   { background: var(--color-bg-section); }
+.section-deeper { background: var(--color-bg-section-2); }
 .text-muted-light { color: rgba(255,255,255,0.45); font-size: 0.875rem; line-height: 1.75; }
-.text-sky { color: #0ea5e9; }
+.text-sky { color: var(--color-primary); }
 
 /* HERO */
 .contact-hero {
     height: 55vh;
-    background: linear-gradient(135deg, #080c12 0%, #0d1828 100%);
+    background: linear-gradient(135deg, var(--color-bg-section-2) 0%, var(--color-bg-overlay) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -169,7 +169,7 @@
 .section-badge {
     display: inline-block;
     background: rgba(14,165,233,0.12);
-    color: #0ea5e9;
+    color: var(--color-primary);
     border: 1px solid rgba(14,165,233,0.3);
     border-radius: 100px;
     padding: 0.3rem 1.1rem;
@@ -203,7 +203,7 @@
 .form-control-dark {
     background: rgba(255,255,255,0.05) !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
-    color: #fff !important;
+    color: var(--color-white) !important;
     border-radius: 10px;
     padding: 0.7rem 1rem;
     font-size: 0.9rem;
@@ -211,7 +211,7 @@
 }
 .form-control-dark::placeholder { color: rgba(255,255,255,0.25) !important; }
 .form-control-dark:focus {
-    border-color: #0ea5e9 !important;
+    border-color: var(--color-primary) !important;
     box-shadow: 0 0 0 3px rgba(14,165,233,0.12) !important;
     outline: none;
     background: rgba(255,255,255,0.07) !important;
@@ -265,8 +265,8 @@
 }
 
 /* BUTTONS */
-.btn-sky { background:#0ea5e9;color:#fff;border:none;font-weight:600;transition:background 0.2s; }
-.btn-sky:hover { background:#0284c7;color:#fff; }
+.btn-sky { background:var(--color-primary);color:var(--color-white);border:none;font-weight:600;transition:background 0.2s; }
+.btn-sky:hover { background:var(--color-primary-strong);color:var(--color-white); }
 </style>
 
 @endsection

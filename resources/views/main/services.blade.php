@@ -28,14 +28,14 @@
 
         @php
         $services = [
-            ['icon'=>'📍','color'=>'#0ea5e9','bg'=>'rgba(14,165,233,0.1)','title'=>'Real-Time Tracking','desc'=>'Track your shipment anytime using our GPS-enabled live tracking system with accurate ETA updates.'],
-            ['icon'=>'🚚','color'=>'#34d399','bg'=>'rgba(52,211,153,0.1)','title'=>'Fast Delivery','desc'=>'Quick, reliable delivery across multiple cities with optimised routing for the fastest possible transit.'],
-            ['icon'=>'💬','color'=>'#a78bfa','bg'=>'rgba(167,139,250,0.1)','title'=>'24/7 Customer Support','desc'=>'Our support team is available around the clock to assist with any delivery questions or concerns.'],
-            ['icon'=>'🔐','color'=>'#fbbf24','bg'=>'rgba(251,191,36,0.1)','title'=>'Secure Packaging','desc'=>'Every parcel is handled with extra care and protection, with audit-ready tracking at every step.'],
-            ['icon'=>'🏠','color'=>'#f87171','bg'=>'rgba(248,113,113,0.1)','title'=>'Door-to-Door Pickup','desc'=>'We pick up parcels directly from your location — no need to travel to a drop-off point.'],
-            ['icon'=>'🗺️','color'=>'#0ea5e9','bg'=>'rgba(14,165,233,0.1)','title'=>'Multi-City Delivery','desc'=>'Deliver across 250+ cities with real-time updates and full chain-of-custody transparency.'],
-            ['icon'=>'📦','color'=>'#34d399','bg'=>'rgba(52,211,153,0.1)','title'=>'Business Shipping','desc'=>'Bulk &amp; scheduled deliveries designed for businesses of all sizes with dedicated account management.'],
-            ['icon'=>'💳','color'=>'#fbbf24','bg'=>'rgba(251,191,36,0.1)','title'=>'Cash on Delivery','desc'=>'Convenient COD options available — we collect on your behalf and remit securely.'],
+            ['icon'=>'📍','color'=>'var(--color-primary)','bg'=>'rgba(14,165,233,0.1)','title'=>'Real-Time Tracking','desc'=>'Track your shipment anytime using our GPS-enabled live tracking system with accurate ETA updates.'],
+            ['icon'=>'🚚','color'=>'var(--color-success)','bg'=>'rgba(52,211,153,0.1)','title'=>'Fast Delivery','desc'=>'Quick, reliable delivery across multiple cities with optimised routing for the fastest possible transit.'],
+            ['icon'=>'💬','color'=>'var(--color-violet)','bg'=>'rgba(167,139,250,0.1)','title'=>'24/7 Customer Support','desc'=>'Our support team is available around the clock to assist with any delivery questions or concerns.'],
+            ['icon'=>'🔐','color'=>'var(--color-warning)','bg'=>'rgba(251,191,36,0.1)','title'=>'Secure Packaging','desc'=>'Every parcel is handled with extra care and protection, with audit-ready tracking at every step.'],
+            ['icon'=>'🏠','color'=>'var(--color-danger)','bg'=>'rgba(248,113,113,0.1)','title'=>'Door-to-Door Pickup','desc'=>'We pick up parcels directly from your location — no need to travel to a drop-off point.'],
+            ['icon'=>'🗺️','color'=>'var(--color-primary)','bg'=>'rgba(14,165,233,0.1)','title'=>'Multi-City Delivery','desc'=>'Deliver across 250+ cities with real-time updates and full chain-of-custody transparency.'],
+            ['icon'=>'📦','color'=>'var(--color-success)','bg'=>'rgba(52,211,153,0.1)','title'=>'Business Shipping','desc'=>'Bulk &amp; scheduled deliveries designed for businesses of all sizes with dedicated account management.'],
+            ['icon'=>'💳','color'=>'var(--color-warning)','bg'=>'rgba(251,191,36,0.1)','title'=>'Cash on Delivery','desc'=>'Convenient COD options available — we collect on your behalf and remit securely.'],
         ];
         @endphp
 
@@ -94,16 +94,16 @@
 </section>
 
 <style>
-.section-dark   { background: #0d1117; }
-.section-deeper { background: #080c12; }
+.section-dark   { background: var(--color-bg-section); }
+.section-deeper { background: var(--color-bg-section-2); }
 .text-muted-light { color: rgba(255,255,255,0.45); font-size: 0.9rem; line-height: 1.75; }
-.text-sky { color: #0ea5e9; }
+.text-sky { color: var(--color-primary); }
 
 /* HERO */
 .services-hero {
     position: relative;
     height: 68vh;
-    background: linear-gradient(135deg, #080c12 0%, #0d1828 100%);
+    background: linear-gradient(135deg, var(--color-bg-section-2) 0%, var(--color-bg-overlay) 100%);
     overflow: hidden;
 }
 .services-hero::before {
@@ -122,7 +122,7 @@
 .section-badge {
     display: inline-block;
     background: rgba(14,165,233,0.12);
-    color: #0ea5e9;
+    color: var(--color-primary);
     border: 1px solid rgba(14,165,233,0.3);
     border-radius: 100px;
     padding: 0.3rem 1.1rem;
@@ -134,7 +134,7 @@
 
 .section-label {
     display: inline-block;
-    color: #0ea5e9;
+    color: var(--color-primary);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -188,7 +188,7 @@
     border-radius: 50%;
     background: rgba(14,165,233,0.1);
     border: 2px solid rgba(14,165,233,0.35);
-    color: #0ea5e9;
+    color: var(--color-primary);
     font-size: 1.5rem;
     font-weight: 800;
     display: flex; align-items: center; justify-content: center;
@@ -199,21 +199,21 @@
 .step-circle-amber {
     background: rgba(251,191,36,0.1);
     border-color: rgba(251,191,36,0.35);
-    color: #fbbf24;
+    color: var(--color-warning);
 }
 .step-circle-green {
     background: rgba(52,211,153,0.1);
     border-color: rgba(52,211,153,0.35);
-    color: #34d399;
+    color: var(--color-success);
 }
 
 /* BTN */
-.btn-sky { background:#0ea5e9;color:#fff;border:none;font-weight:600;transition:background 0.2s; }
-.btn-sky:hover { background:#0284c7;color:#fff; }
+.btn-sky { background:var(--color-primary);color:var(--color-white);border:none;font-weight:600;transition:background 0.2s; }
+.btn-sky:hover { background:var(--color-primary-strong);color:var(--color-white); }
 
 /* CTA */
 .services-cta {
-    background: linear-gradient(135deg, #080c12 0%, #0d1828 100%);
+    background: linear-gradient(135deg, var(--color-bg-section-2) 0%, var(--color-bg-overlay) 100%);
     border-top: 1px solid rgba(255,255,255,0.06);
 }
 </style>

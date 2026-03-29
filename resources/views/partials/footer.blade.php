@@ -8,11 +8,11 @@
                 <div class="col-lg-4">
                     <a class="d-flex align-items-center gap-2 mb-3 text-decoration-none" href="{{ route('home') }}">
                         <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-                            <path d="M4 16L14 6L28 16L14 26L4 16Z" fill="#0ea5e9" opacity="0.9"/>
-                            <path d="M10 16L18 10L26 16L18 22L10 16Z" fill="#fbbf24"/>
+                            <path d="M4 16L14 6L28 16L14 26L4 16Z" fill="var(--color-primary)" opacity="0.9"/>
+                            <path d="M10 16L18 10L26 16L18 22L10 16Z" fill="var(--color-warning)"/>
                         </svg>
-                        <span style="font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-0.02em;">
-                            Swift<span style="color:#0ea5e9;">Ship</span>
+                        <span style="font-size:1.2rem;font-weight:800;color:var(--color-white);letter-spacing:-0.02em;">
+                            Swift<span style="color:var(--color-primary);">Ship</span>
                         </span>
                     </a>
                     <p class="footer-desc">
@@ -115,7 +115,7 @@
 
 <style>
 .swiftship-footer {
-    background: #0a0f1e;
+    background: var(--color-bg-deep);
     border-top: 1px solid rgba(255,255,255,0.06);
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
@@ -154,7 +154,7 @@
     font-size: 0.875rem;
     transition: color 0.2s;
 }
-.footer-links a:hover { color: #0ea5e9; }
+.footer-links a:hover { color: var(--color-primary); }
 
 .footer-contact {
     list-style: none;
@@ -172,26 +172,26 @@
     font-size: 0.875rem;
     line-height: 1.5;
 }
-.footer-contact svg { color: #0ea5e9; flex-shrink: 0; margin-top: 2px; }
+.footer-contact svg { color: var(--color-primary); flex-shrink: 0; margin-top: 2px; }
 
 .footer-input {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
-    color: #fff;
+    color: var(--color-white);
     border-radius: 6px;
     font-size: 0.82rem;
 }
 .footer-input::placeholder { color: rgba(255,255,255,0.3); }
 .footer-input:focus {
     background: rgba(255,255,255,0.1);
-    border-color: #0ea5e9;
+    border-color: var(--color-primary);
     box-shadow: none;
-    color: #fff;
+    color: var(--color-white);
 }
 
 .btn-track-sm {
-    background: #0ea5e9;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     border-radius: 6px;
     padding: 0 1rem;
@@ -200,7 +200,7 @@
     white-space: nowrap;
     transition: background 0.2s;
 }
-.btn-track-sm:hover { background: #0284c7; color: #fff; }
+.btn-track-sm:hover { background: var(--color-primary-strong); color: var(--color-white); }
 
 .social-icon {
     display: inline-flex;
@@ -218,8 +218,8 @@
 }
 .social-icon:hover {
     background: rgba(14,165,233,0.15);
-    border-color: #0ea5e9;
-    color: #0ea5e9;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .footer-bottom {
@@ -236,5 +236,5 @@
     font-size: 0.8rem;
     transition: color 0.2s;
 }
-.footer-legal a:hover { color: #0ea5e9; }
+.footer-legal a:hover { color: var(--color-primary); }
 </style>

@@ -10,6 +10,13 @@ class ParcelTimeline extends Model
         'parcel_id',
         'status',
         'notes',
+        'lat',
+        'lng',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function parcel()

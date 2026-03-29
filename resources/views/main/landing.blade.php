@@ -37,36 +37,36 @@
 </section>
 
 <!-- ================= TRUST METRICS ================= -->
-<section class="py-4 bg-light border-bottom">
+<section class="py-4" style="background:var(--color-bg-section);border-bottom:1px solid rgba(255,255,255,0.06);">
     <div class="container">
         <div class="row text-center g-4">
             <div class="col-md-3 fade-up">
-                <h4 class="fw-bold">10K+</h4>
-                <p class="text-muted small mb-0">Daily Deliveries</p>
+                <h4 class="fw-bold" style="color:var(--color-primary);">10K+</h4>
+                <p class="small mb-0" style="color:rgba(255,255,255,0.4);">Daily Deliveries</p>
             </div>
             <div class="col-md-3 fade-up delay-1">
-                <h4 class="fw-bold">250+</h4>
-                <p class="text-muted small mb-0">Service Locations</p>
+                <h4 class="fw-bold" style="color:var(--color-primary);">250+</h4>
+                <p class="small mb-0" style="color:rgba(255,255,255,0.4);">Service Locations</p>
             </div>
             <div class="col-md-3 fade-up delay-2">
-                <h4 class="fw-bold">99.8%</h4>
-                <p class="text-muted small mb-0">On-Time Delivery</p>
+                <h4 class="fw-bold" style="color:var(--color-primary);">99.8%</h4>
+                <p class="small mb-0" style="color:rgba(255,255,255,0.4);">On-Time Delivery</p>
             </div>
             <div class="col-md-3 fade-up delay-3">
-                <h4 class="fw-bold">24/7</h4>
-                <p class="text-muted small mb-0">Live Tracking</p>
+                <h4 class="fw-bold" style="color:var(--color-primary);">24/7</h4>
+                <p class="small mb-0" style="color:rgba(255,255,255,0.4);">Live Tracking</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ================= WHY CHOOSE US ================= -->
-<section class="py-5 bg-white">
+<section class="py-5" style="background:var(--color-bg-section-2);">
     <div class="container">
 
         <div class="text-center mb-5 fade-up">
-            <h2 class="fw-bold">Why Choose SwiftShip</h2>
-            <p class="text-muted mt-2">
+            <h2 class="fw-bold text-white">Why Choose SwiftShip</h2>
+            <p class="mt-2" style="color:rgba(255,255,255,0.45);">
                 A logistics platform engineered for reliability, speed, and scale
             </p>
         </div>
@@ -76,8 +76,8 @@
             <div class="col-md-4 fade-up">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">📍</div>
-                    <h5 class="fw-semibold">Real-Time Tracking</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Real-Time Tracking</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         Live shipment visibility with accurate ETA updates.
                     </p>
                 </div>
@@ -86,8 +86,8 @@
             <div class="col-md-4 fade-up delay-1">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">🚚</div>
-                    <h5 class="fw-semibold">Optimized Routing</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Optimized Routing</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         Faster deliveries using intelligent route optimization.
                     </p>
                 </div>
@@ -96,8 +96,8 @@
             <div class="col-md-4 fade-up delay-2">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">🔐</div>
-                    <h5 class="fw-semibold">Secure Handling</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Secure Handling</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         End-to-end parcel security with audit-ready tracking.
                     </p>
                 </div>
@@ -109,8 +109,8 @@
             <div class="col-md-4 fade-up">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">📊</div>
-                    <h5 class="fw-semibold">Operational Analytics</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Operational Analytics</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         Monitor delivery performance and delay metrics in real time.
                     </p>
                 </div>
@@ -119,8 +119,8 @@
             <div class="col-md-4 fade-up delay-1">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">🧭</div>
-                    <h5 class="fw-semibold">Smart Agent Assignment</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Smart Agent Assignment</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         Automatic agent allocation based on proximity and workload.
                     </p>
                 </div>
@@ -129,8 +129,8 @@
             <div class="col-md-4 fade-up delay-2">
                 <div class="feature-card h-100 p-4 text-center">
                     <div class="feature-icon mb-3">🗂️</div>
-                    <h5 class="fw-semibold">Delivery History</h5>
-                    <p class="text-muted">
+                    <h5 class="fw-semibold text-white">Delivery History</h5>
+                    <p style="color:rgba(255,255,255,0.45);">
                         Complete shipment timeline with status logs and traceability.
                     </p>
                 </div>
@@ -162,7 +162,7 @@
     position: relative;
     height: 92vh;
     overflow: hidden;
-    background: #0f172a;
+    background: var(--color-bg-hero);
 }
 
 #hero-canvas {
@@ -192,7 +192,7 @@
 }
 
 .hero-title {
-    color: #ffffff;
+    color: var(--color-white);
     text-shadow: 0 3px 12px rgba(0,0,0,0.75);
 }
 
@@ -216,15 +216,16 @@
 
 /* FEATURES */
 .feature-card {
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 14px;
-    background: #fff;
+    background: rgba(255,255,255,0.03);
     transition: all 0.3s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    border-color: rgba(14,165,233,0.25);
 }
 
 .feature-icon {
@@ -233,7 +234,7 @@
 
 /* CTA */
 .cta-section {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: linear-gradient(135deg, var(--color-bg-hero), var(--color-slate-800));
 }
 </style>
 

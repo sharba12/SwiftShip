@@ -8,15 +8,17 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    @include('partials.theme')
 
     <style>
     :root {
         --sidebar-w: 230px;
-        --sidebar-bg: #0c1120;
+        --sidebar-bg: var(--color-bg-dark);
         --sidebar-border: rgba(255,255,255,0.06);
-        --accent: #0ea5e9;
-        --accent-green: #34d399;
-        --content-bg: #0f1623;
+        --accent: var(--color-primary);
+        --accent-green: var(--color-success);
+        --content-bg: var(--color-bg-panel);
         --text-muted-s: rgba(255,255,255,0.4);
     }
 
@@ -25,7 +27,7 @@
     body {
         font-family: 'Segoe UI', system-ui, sans-serif;
         background: var(--content-bg);
-        color: #fff;
+        color: var(--color-white);
         display: flex;
         min-height: 100vh;
     }
@@ -55,7 +57,7 @@
     .sidebar-brand-text {
         font-size: 1.1rem;
         font-weight: 800;
-        color: #fff;
+        color: var(--color-white);
         letter-spacing: -0.02em;
     }
     .sidebar-brand-text span { color: var(--accent); }
@@ -89,7 +91,7 @@
         position: relative;
     }
     .sidebar-link i { width: 18px; text-align: center; font-size: 0.9rem; }
-    .sidebar-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .sidebar-link:hover { background: rgba(255,255,255,0.05); color: var(--color-white); }
     .sidebar-link.active {
         background: rgba(14,165,233,0.12);
         color: var(--accent);
@@ -120,9 +122,9 @@
     .sidebar-avatar {
         width: 34px; height: 34px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent-green), #059669);
+        background: linear-gradient(135deg, var(--accent-green), var(--color-success-strong));
         display: flex; align-items: center; justify-content: center;
-        font-size: 0.8rem; font-weight: 700; color: #fff;
+        font-size: 0.8rem; font-weight: 700; color: var(--color-white);
         flex-shrink: 0;
     }
     .sidebar-user-name {
@@ -136,7 +138,7 @@
         width: 100%;
         background: rgba(239,68,68,0.1);
         border: 1px solid rgba(239,68,68,0.2);
-        color: #f87171;
+        color: var(--color-danger);
         padding: 0.55rem;
         border-radius: 8px;
         font-size: 0.82rem; font-weight: 600;
@@ -144,7 +146,7 @@
         transition: all 0.2s;
         display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-    .btn-sidebar-logout:hover { background: rgba(239,68,68,0.2); color: #fca5a5; }
+    .btn-sidebar-logout:hover { background: rgba(239,68,68,0.2); color: var(--color-danger-soft); }
 
     /* ── CONTENT ── */
     .agent-content {
@@ -177,7 +179,7 @@
 
     .sidebar-toggle {
         display: none; background: none; border: none;
-        color: #fff; font-size: 1.2rem; cursor: pointer;
+        color: var(--color-white); font-size: 1.2rem; cursor: pointer;
     }
 
     @media (max-width: 991px) {
@@ -196,8 +198,8 @@
 <aside class="agent-sidebar" id="agentSidebar">
     <a class="sidebar-brand" href="{{ route('agent.dashboard') }}">
         <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-            <path d="M4 16L14 6L28 16L14 26L4 16Z" fill="#0ea5e9" opacity="0.9"/>
-            <path d="M10 16L18 10L26 16L18 22L10 16Z" fill="#fbbf24"/>
+            <path d="M4 16L14 6L28 16L14 26L4 16Z" fill="var(--color-primary)" opacity="0.9"/>
+            <path d="M10 16L18 10L26 16L18 22L10 16Z" fill="var(--color-warning)"/>
         </svg>
         <span class="sidebar-brand-text">Swift<span>Ship</span></span>
     </a>
@@ -211,6 +213,14 @@
         <a href="{{ route('agent.deliveries') }}"
            class="sidebar-link {{ request()->routeIs('agent.deliveries') || request()->routeIs('agent.delivery.*') ? 'active' : '' }}">
             <i class="bi bi-truck"></i> My Deliveries
+        </a>
+        <a href="{{ route('agent.qr.scanner') }}"
+           class="sidebar-link {{ request()->routeIs('agent.qr.scanner') ? 'active' : '' }}">
+            <i class="bi bi-qr-code-scan"></i> QR Scanner
+        </a>
+        <a href="{{ route('agent.profile') }}"
+           class="sidebar-link {{ request()->routeIs('agent.profile') ? 'active' : '' }}">
+            <i class="bi bi-person-circle"></i> My Profile
         </a>
     </nav>
 
@@ -262,5 +272,6 @@ document.getElementById('sidebarToggle').addEventListener('click',()=>{
     document.getElementById('agentSidebar').classList.toggle('open');
 });
 </script>
+@stack('scripts')
 </body>
 </html>

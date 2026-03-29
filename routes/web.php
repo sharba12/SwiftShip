@@ -11,64 +11,37 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\RatingController;
 
-Route::get('/parcel/{parcel}/location', [TrackingController::class, 'getLocation'])
-    ->name('parcel.location');
-    
-Route::get('/admin/agents/live-locations', [
-    App\Http\Controllers\Admin\DashboardController::class,
-    'agentLocations'
-])->name('admin.agents.locations');
-
-Route::get('/rate/{trackingId}', [RatingController::class, 'create'])->name('rating.create');
-Route::post('/rate/{trackingId}', [RatingController::class, 'store'])->name('rating.store');
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/agents/{agentId}/ratings', [RatingController::class, 'agentRatings'])
-        ->name('admin.agent.ratings');
-});
-
-Route::middleware(['auth', 'role:admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        
-        // Existing parcel routes...
-        Route::get('parcels', [AdminParcelController::class, 'index'])->name('parcels.index');
-        Route::get('parcels/create', [AdminParcelController::class, 'create'])->name('parcels.create');
-        Route::post('parcels', [AdminParcelController::class, 'store'])->name('parcels.store');
-        
-        // Add these new routes:
-        Route::get('parcels/{id}', [AdminParcelController::class, 'show'])->name('parcels.show');
-        Route::get('parcels/{id}/edit', [AdminParcelController::class, 'edit'])->name('parcels.edit');
-        Route::put('parcels/{id}', [AdminParcelController::class, 'update'])->name('parcels.update');
-        Route::delete('parcels/{id}', [AdminParcelController::class, 'destroy'])->name('parcels.destroy');
-        
-        // QR Code routes (from QrCodeController)
-        Route::get('parcel/{trackingId}/qr', [\App\Http\Controllers\Agent\QrCodeController::class, 'generate'])
-            ->name('parcel.qr');
-        Route::get('parcel/{trackingId}/qr-label', [\App\Http\Controllers\Agent\QrCodeController::class, 'downloadLabel'])
-            ->name('parcel.qr.label');
-    });
 /*
 |--------------------------------------------------------------------------
 | Public Pages
 |--------------------------------------------------------------------------
 */
-// Public tracking route
-Route::get('/track/{tracking_id}', [TrackingController::class, 'show'])->name('track');
+
 Route::get('/', [MainPageController::class, 'landingPage'])->name('home');
 Route::get('/about', [MainPageController::class, 'about'])->name('about');
 Route::get('/services', [MainPageController::class, 'services'])->name('services');
 Route::get('/contact', [MainPageController::class, 'contact'])->name('contact');
 
-// Track form page — keep using your existing MainPageController
+// Track form page
 Route::get('/track', [MainPageController::class, 'trackPage'])->name('track.page');
 
-// Track result — now handled by TrackingController
+// Track result
 Route::post('/track', [TrackingController::class, 'trackResult'])->name('track.result');
+Route::get('/track/{tracking_id}', [TrackingController::class, 'show'])->name('track');
 
 // Live location endpoint
-Route::get('/parcel/location/{parcel}', [TrackingController::class, 'getLocation'])->name('parcel.location');
+Route::get('/parcel/location/{parcel}', [TrackingController::class, 'getLocation'])
+    ->name('parcel.location');
+
+/*
+|--------------------------------------------------------------------------
+| Rating Routes (Public)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/rate/{trackingId}', [RatingController::class, 'create'])->name('rating.create');
+Route::post('/rate/{trackingId}', [RatingController::class, 'store'])->name('rating.store');
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard Redirect
@@ -112,21 +85,44 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
+        // Dashboard
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        
+        // Agent live locations
+        Route::get('/agents/live-locations', [AdminDashboardController::class, 'agentLocations'])
+            ->name('agents.locations');
 
+        // Resources
         Route::resource('agents', AgentController::class);
         Route::resource('customers', CustomerController::class);
 
+        // Parcel routes
         Route::get('parcels', [AdminParcelController::class, 'index'])->name('parcels.index');
         Route::get('parcels/create', [AdminParcelController::class, 'create'])->name('parcels.create');
         Route::post('parcels', [AdminParcelController::class, 'store'])->name('parcels.store');
+        Route::get('parcels/{id}', [AdminParcelController::class, 'show'])->name('parcels.show');
+        Route::get('parcels/{id}/edit', [AdminParcelController::class, 'edit'])->name('parcels.edit');
+        Route::put('parcels/{id}', [AdminParcelController::class, 'update'])->name('parcels.update');
+        Route::delete('parcels/{id}', [AdminParcelController::class, 'destroy'])->name('parcels.destroy');
+        
+        // QR Code routes
+        Route::get('parcel/{trackingId}/qr', [\App\Http\Controllers\Agent\QrCodeController::class, 'generate'])
+            ->name('parcel.qr');
+        Route::get('parcel/{trackingId}/qr-label', [\App\Http\Controllers\Agent\QrCodeController::class, 'downloadLabel'])
+            ->name('parcel.qr.label');
 
+        // Agent Ratings
+        Route::get('/agents/{agentId}/ratings', [RatingController::class, 'agentRatings'])
+            ->name('agent.ratings');
+
+        // Reports
         Route::get('/reports', [ReportController::class, 'index'])->name('reports');
         Route::get('/reports/agent-performance', [ReportController::class, 'agentPerformance'])->name('reports.agents');
         Route::get('/reports/customers', [ReportController::class, 'customerUsage'])->name('reports.customers');
         Route::get('/reports/daily-delivered', [ReportController::class, 'dailyDelivered'])->name('reports.daily');
         Route::get('/reports/pending', [ReportController::class, 'pendingParcels'])->name('reports.pending');
 
+        // Report PDFs
         Route::get('/reports/agents/pdf', [ReportController::class, 'AgentReportPDF'])->name('reports.agents.pdf');
         Route::get('/reports/customers/pdf', [ReportController::class, 'customerReportPDF'])->name('reports.customers.pdf');
         Route::get('/reports/daily/pdf', [ReportController::class, 'DailyReportPDF'])->name('reports.daily.pdf');

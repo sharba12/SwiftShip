@@ -68,7 +68,7 @@
                     <img src="{{ asset('images/images.jpg') }}" alt="Delivery" class="img-fluid rounded-4 about-img">
                     <div class="img-glow"></div>
                     <div class="floating-badge-card">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         <span>Verified &amp; Secure</span>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
         <div class="row g-4">
             <div class="col-md-4 fade-up">
                 <div class="mvv-card h-100">
-                    <div class="mvv-icon" style="background:rgba(14,165,233,0.12);color:#0ea5e9;">
+                    <div class="mvv-icon" style="background:rgba(14,165,233,0.12);color:var(--color-primary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     </div>
                     <h4 class="text-white fw-bold mt-4">Our Mission</h4>
@@ -98,7 +98,7 @@
             </div>
             <div class="col-md-4 fade-up delay-1">
                 <div class="mvv-card h-100 mvv-card-featured">
-                    <div class="mvv-icon" style="background:rgba(251,191,36,0.12);color:#fbbf24;">
+                    <div class="mvv-icon" style="background:rgba(251,191,36,0.12);color:var(--color-warning);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     </div>
                     <h4 class="text-white fw-bold mt-4">Our Vision</h4>
@@ -109,7 +109,7 @@
             </div>
             <div class="col-md-4 fade-up delay-2">
                 <div class="mvv-card h-100">
-                    <div class="mvv-icon" style="background:rgba(52,211,153,0.12);color:#34d399;">
+                    <div class="mvv-icon" style="background:rgba(52,211,153,0.12);color:var(--color-success);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
                     </div>
                     <h4 class="text-white fw-bold mt-4">Our Values</h4>
@@ -167,17 +167,17 @@
 
 <style>
 /* ── BASE ── */
-.section-dark   { background: #0d1117; }
-.section-deeper { background: #080c12; }
+.section-dark   { background: var(--color-bg-section); }
+.section-deeper { background: var(--color-bg-section-2); }
 .text-muted-light { color: rgba(255,255,255,0.45); font-size: 0.95rem; line-height: 1.75; }
-.text-sky   { color: #0ea5e9; }
-.text-amber { color: #fbbf24; }
+.text-sky   { color: var(--color-primary); }
+.text-amber { color: var(--color-warning); }
 
 /* ── HERO ── */
 .about-hero {
     position: relative;
     height: 72vh;
-    background: #080c12;
+    background: var(--color-bg-section-2);
     overflow: hidden;
 }
 #about-canvas {
@@ -195,7 +195,7 @@
 .about-badge {
     display: inline-block;
     background: rgba(14,165,233,0.12);
-    color: #0ea5e9;
+    color: var(--color-primary);
     border: 1px solid rgba(14,165,233,0.3);
     border-radius: 100px;
     padding: 0.3rem 1.1rem;
@@ -207,7 +207,7 @@
 
 .section-label {
     display: inline-block;
-    color: #0ea5e9;
+    color: var(--color-primary);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -234,7 +234,7 @@
     flex-direction: column;
     gap: 2px;
 }
-.stat-num { color: #0ea5e9; font-size: 1.5rem; font-weight: 800; line-height: 1; }
+.stat-num { color: var(--color-primary); font-size: 1.5rem; font-weight: 800; line-height: 1; }
 .stat-label { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
 
 /* ── ABOUT IMAGE ── */
@@ -249,14 +249,14 @@
 .floating-badge-card {
     position: absolute;
     bottom: -16px; left: 24px;
-    background: #0d1117;
+    background: var(--color-bg-section);
     border: 1px solid rgba(14,165,233,0.25);
     border-radius: 10px;
     padding: 0.6rem 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #fff;
+    color: var(--color-white);
     font-size: 0.82rem;
     font-weight: 600;
     backdrop-filter: blur(8px);
@@ -311,17 +311,17 @@
 
 /* ── BTN ── */
 .btn-sky {
-    background: #0ea5e9;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     font-weight: 600;
     transition: background 0.2s;
 }
-.btn-sky:hover { background: #0284c7; color: #fff; }
+.btn-sky:hover { background: var(--color-primary-strong); color: var(--color-white); }
 
 /* ── CTA ── */
 .about-cta {
-    background: linear-gradient(135deg, #080c12 0%, #0d1828 100%);
+    background: linear-gradient(135deg, var(--color-bg-section-2) 0%, var(--color-bg-overlay) 100%);
     border-top: 1px solid rgba(255,255,255,0.06);
 }
 </style>

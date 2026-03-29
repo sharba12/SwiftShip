@@ -24,7 +24,7 @@
                 @csrf
                 <div class="track-input-group">
                     <div class="track-input-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2">
                             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                         </svg>
                     </div>
@@ -160,16 +160,16 @@
 </section>
 
 <style>
-.section-dark   { background: #0d1117; }
-.section-deeper { background: #080c12; }
+.section-dark   { background: var(--color-bg-section); }
+.section-deeper { background: var(--color-bg-section-2); }
 .text-muted-light { color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.75; }
-.text-sky { color:#0ea5e9; }
+.text-sky { color:var(--color-primary); }
 
 /* HERO */
 .track-hero {
     position: relative;
     min-height: 80vh;
-    background: #080c12;
+    background: var(--color-bg-section-2);
     overflow: hidden;
 }
 #track-canvas {
@@ -185,13 +185,13 @@
 
 .section-badge {
     display:inline-block;
-    background:rgba(14,165,233,0.12);color:#0ea5e9;
+    background:rgba(14,165,233,0.12);color:var(--color-primary);
     border:1px solid rgba(14,165,233,0.3);border-radius:100px;
     padding:0.3rem 1.1rem;font-size:0.78rem;font-weight:600;
     letter-spacing:0.12em;text-transform:uppercase;
 }
 .section-label {
-    display:inline-block;color:#0ea5e9;
+    display:inline-block;color:var(--color-primary);
     font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
 }
 
@@ -214,7 +214,7 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .track-input-group:focus-within {
-    border-color: #0ea5e9;
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(14,165,233,0.12);
 }
 .track-input-icon { flex-shrink: 0; }
@@ -223,14 +223,14 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #fff;
+    color: var(--color-white);
     font-size: 0.95rem;
     min-width: 0;
 }
 .track-input::placeholder { color: rgba(255,255,255,0.3); }
 .track-btn {
-    background: #0ea5e9;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     border-radius: 12px;
     padding: 0.75rem 1.5rem;
@@ -242,7 +242,7 @@
     transition: background 0.2s, transform 0.15s;
     flex-shrink: 0;
 }
-.track-btn:hover { background:#0284c7; transform:translateX(2px); }
+.track-btn:hover { background:var(--color-primary-strong); transform:translateX(2px); }
 
 .alert-dark-error {
     display: flex;
@@ -252,7 +252,7 @@
     border: 1px solid rgba(239,68,68,0.25);
     border-radius: 10px;
     padding: 0.75rem 1rem;
-    color: #f87171;
+    color: var(--color-danger);
     font-size: 0.875rem;
 }
 
@@ -269,10 +269,10 @@
 
 /* STATUS BADGES */
 .status-badge { padding:0.35rem 1rem;border-radius:100px;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase; }
-.status-delivered { background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25); }
-.status-pending   { background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.25); }
-.status-in-transit{ background:rgba(14,165,233,0.12);color:#0ea5e9;border:1px solid rgba(14,165,233,0.25); }
-.status-cancelled { background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25); }
+.status-delivered { background:rgba(52,211,153,0.12);color:var(--color-success);border:1px solid rgba(52,211,153,0.25); }
+.status-pending   { background:rgba(251,191,36,0.12);color:var(--color-warning);border:1px solid rgba(251,191,36,0.25); }
+.status-in-transit{ background:rgba(14,165,233,0.12);color:var(--color-primary);border:1px solid rgba(14,165,233,0.25); }
+.status-cancelled { background:rgba(239,68,68,0.12);color:var(--color-danger);border:1px solid rgba(239,68,68,0.25); }
 
 /* TIMELINE */
 .timeline { position:relative;padding-left:1.75rem; }
@@ -284,11 +284,11 @@
 .timeline-dot {
     position:absolute;left:-1.75rem;top:4px;
     width:14px;height:14px;border-radius:50%;
-    background:#0d1117;border:2px solid rgba(255,255,255,0.2);
+    background:var(--color-bg-section);border:2px solid rgba(255,255,255,0.2);
     transition:all 0.2s;
 }
 .timeline-item-active .timeline-dot {
-    background:#0ea5e9;border-color:#0ea5e9;
+    background:var(--color-primary);border-color:var(--color-primary);
     box-shadow:0 0 10px rgba(14,165,233,0.5);
 }
 .timeline-status { color:rgba(255,255,255,0.85);font-weight:600;font-size:0.9rem;margin:0 0 2px; }
@@ -302,11 +302,11 @@
 .step-circle {
     width:72px;height:72px;border-radius:50%;margin:0 auto;
     background:rgba(14,165,233,0.1);border:2px solid rgba(14,165,233,0.3);
-    color:#0ea5e9;font-size:1.5rem;font-weight:800;
+    color:var(--color-primary);font-size:1.5rem;font-weight:800;
     display:flex;align-items:center;justify-content:center;
 }
-.step-amber { background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:#fbbf24; }
-.step-green { background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.3);color:#34d399; }
+.step-amber { background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:var(--color-warning); }
+.step-green { background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.3);color:var(--color-success); }
 
 @media(max-width:576px){
     .track-btn { padding:0.7rem 1rem;font-size:0.82rem; }
@@ -387,11 +387,11 @@ document.addEventListener('DOMContentLoaded', function(){
         .then(data=>{
             if(data.lat && data.lng){
                 const icon = L.divIcon({
-                    html: '<div style="width:14px;height:14px;background:#0ea5e9;border:3px solid #fff;border-radius:50%;box-shadow:0 0 10px rgba(14,165,233,0.8);"></div>',
+                    html: '<div style="width:14px;height:14px;background:var(--color-primary);border:3px solid var(--color-white);border-radius:50%;box-shadow:0 0 10px rgba(14,165,233,0.8);"></div>',
                     className:'',iconAnchor:[7,7]
                 });
                 L.marker([data.lat,data.lng],{icon}).addTo(map)
-                    .bindPopup('<b style="color:#0ea5e9">Parcel Location</b>').openPopup();
+                    .bindPopup('<b style="color:var(--color-primary)">Parcel Location</b>').openPopup();
                 map.setView([data.lat,data.lng],13);
             }
         }).catch(()=>{});

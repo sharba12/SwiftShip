@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcel Status Update</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,58 +14,69 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #4F46E5;
             color: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
-            border-radius: 10px 10px 0 0;
+            border-radius: 5px 5px 0 0;
         }
         .content {
-            background: #f9fafb;
+            background-color: #f9fafb;
             padding: 30px;
             border: 1px solid #e5e7eb;
         }
         .status-badge {
             display: inline-block;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
             margin: 10px 0;
         }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-in_transit { background: #dbeafe; color: #1e40af; }
-        .status-out_for_delivery { background: #e0e7ff; color: #4338ca; }
-        .status-delivered { background: #d1fae5; color: #065f46; }
-        .status-failed { background: #fee2e2; color: #991b1b; }
+        .status-pending { background-color: #FEF3C7; color: #92400E; }
+        .status-in_transit { background-color: #DBEAFE; color: #1E40AF; }
+        .status-out_for_delivery { background-color: #FED7AA; color: #9A3412; }
+        .status-delivered { background-color: #D1FAE5; color: #065F46; }
+        .status-failed { background-color: #FEE2E2; color: #991B1B; }
         .info-box {
-            background: white;
+            background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            border-left: 4px solid #667eea;
-        }
-        .tracking-id {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin: 10px 0;
-        }
-        .button {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
             border-radius: 5px;
             margin: 20px 0;
         }
+        .info-row {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .value {
+            color: #111827;
+            font-size: 16px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4F46E5;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
         .footer {
             text-align: center;
-            color: #6b7280;
-            font-size: 12px;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #e5e7eb;
+            color: #6B7280;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -71,53 +84,55 @@
     <div class="header">
         <h1>📦 Parcel Status Update</h1>
     </div>
-    
+
     <div class="content">
-        <p>Hi {{ $customer->name }},</p>
-        
+        <p>Dear {{ $customer->name }},</p>
+
         <p>Your parcel status has been updated:</p>
-        
-        <div class="tracking-id">{{ $parcel->tracking_id }}</div>
-        
-        <div class="status-badge status-{{ $status }}">
-            {{ ucfirst(str_replace('_', ' ', $status)) }}
+
+        <div style="text-align: center;">
+            <span class="status-badge status-{{ $status }}">
+                {{ ucfirst(str_replace('_', ' ', $status)) }}
+            </span>
         </div>
-        
-        @if($status == 'in_transit')
-            <p>🚚 Your parcel is on the move! You can now track its live location in real-time.</p>
-        @elseif($status == 'out_for_delivery')
-            <p>🎉 Great news! Your parcel is out for delivery and should arrive today.</p>
-        @elseif($status == 'delivered')
-            <p>✅ Your parcel has been successfully delivered! We hope you're satisfied with our service.</p>
-        @elseif($status == 'failed')
-            <p>⚠️ We encountered an issue delivering your parcel. Our team will contact you shortly to reschedule.</p>
-        @endif
-        
+
         <div class="info-box">
-            <strong>Parcel Details:</strong><br>
-            <strong>From:</strong> {{ $parcel->sender_name }}<br>
-            <strong>To:</strong> {{ $parcel->receiver_name }}<br>
-            <strong>Destination:</strong> {{ $parcel->address_to }}<br>
-            <strong>Weight:</strong> {{ $parcel->weight }} kg
+            <div class="info-row">
+                <div class="label">Tracking ID</div>
+                <div class="value">{{ $parcel->tracking_id }}</div>
+            </div>
+            <div class="info-row">
+                <div class="label">From</div>
+                <div class="value">{{ $parcel->sender_name }}</div>
+            </div>
+            <div class="info-row">
+                <div class="label">To</div>
+                <div class="value">{{ $parcel->receiver_name }}</div>
+            </div>
+            <div class="info-row">
+                <div class="label">Delivery Address</div>
+                <div class="value">{{ $parcel->address_to }}</div>
+            </div>
         </div>
-        
-        <center>
-            <a href="{{ route('track.page') }}" class="button">
-                Track Your Parcel
-            </a>
-        </center>
-        
-        @if($parcel->notes)
-        <div class="info-box">
-            <strong>Note from Agent:</strong><br>
-            {{ $parcel->notes }}
-        </div>
+
+        @if($status === 'in_transit')
+            <p>✅ Your parcel is now on its way!</p>
+        @elseif($status === 'out_for_delivery')
+            <p>🚚 Great news! Your parcel is out for delivery and should arrive today.</p>
+        @elseif($status === 'delivered')
+            <p>🎉 Your parcel has been successfully delivered!</p>
+        @elseif($status === 'failed')
+            <p>⚠️ We encountered an issue delivering your parcel. Our team will attempt redelivery soon.</p>
         @endif
+
+        <div style="text-align: center;">
+            <a href="{{ route('track', $parcel->tracking_id) }}" class="btn">Track Your Parcel</a>
+        </div>
     </div>
-    
+
     <div class="footer">
-        <p>This is an automated notification. Please do not reply to this email.</p>
-        <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+        <p>Thank you for choosing our delivery service!</p>
+        <p>If you have any questions, please contact our support team.</p>
     </div>
 </body>
 </html>

@@ -22,4 +22,9 @@ class DashboardController extends Controller
             'failed' => $parcels->where('status', 'failed')->count(),
         ]);
     }
+
+    public function profile()
+    {
+        return view('agent.profile');
+    }
 }

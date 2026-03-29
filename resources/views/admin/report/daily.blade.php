@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -20,7 +20,7 @@
             @foreach($parcels as $p)
             <tr>
                 <td>{{ $p->tracking_id }}</td>
-                <td>{{ $p->customer->name }}</td>
+                <td>{{ $p->customer->name ?? '—' }}</td>
                 <td>{{ $p->agent->name ?? '-' }}</td>
                 <td>{{ $p->updated_at }}</td>
             </tr>

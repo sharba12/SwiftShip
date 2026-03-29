@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.admin')
 
 @section('content')
 <div class="card shadow-sm col-md-7 mx-auto">

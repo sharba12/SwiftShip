@@ -81,7 +81,7 @@
             width: 48%;
             border: 1px solid #ccc;
             padding: 10px;
-            background: #f9fafb;
+            background: var(--color-surface-soft);
             text-align: left;
             font-size: 11px;
         }

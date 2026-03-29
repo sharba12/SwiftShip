@@ -17,6 +17,9 @@ Route::middleware(['auth', 'role:agent'])
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        Route::get('/profile', [DashboardController::class, 'profile'])
+            ->name('profile');
+
         // Deliveries
         Route::get('/deliveries', [AgentDeliveryController::class, 'index'])
             ->name('deliveries');

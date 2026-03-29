@@ -2,10 +2,7 @@
     <div class="container">
         <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                <path d="M4 16L14 6L28 16L14 26L4 16Z" fill="#0ea5e9" opacity="0.9"/>
-                <path d="M10 16L18 10L26 16L18 22L10 16Z" fill="#fbbf24"/>
-            </svg>
+            <img src="{{ asset('images/swiftship-logo.svg') }}" alt="SwiftShip logo" class="brand-logo">
             <span class="brand-text">Swift<span class="brand-accent">Ship</span></span>
         </a>
 
@@ -86,10 +83,16 @@
     font-size: 1.3rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: #fff;
+    color: var(--color-white);
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
-.brand-accent { color: #0ea5e9; }
+.brand-accent { color: var(--color-primary); }
+.brand-logo {
+    width: 28px;
+    height: 28px;
+    display: block;
+    object-fit: contain;
+}
 
 /* ── NAV LINKS ── */
 .nav-pill {
@@ -102,18 +105,18 @@
     position: relative;
 }
 .nav-pill:hover {
-    color: #fff !important;
+    color: var(--color-white) !important;
     background: rgba(255,255,255,0.08);
 }
 .nav-pill.active {
-    color: #0ea5e9 !important;
+    color: var(--color-primary) !important;
     background: rgba(14, 165, 233, 0.12);
 }
 
 /* ── BUTTONS ── */
 .btn-nav-login {
-    background: #0ea5e9;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     border-radius: 6px;
     padding: 0.42rem 1.2rem;
@@ -121,11 +124,11 @@
     font-weight: 600;
     transition: background 0.2s;
 }
-.btn-nav-login:hover { background: #0284c7; color: #fff; }
+.btn-nav-login:hover { background: var(--color-primary-strong); color: var(--color-white); }
 
 .btn-nav-dashboard {
     background: rgba(251, 191, 36, 0.15);
-    color: #fbbf24;
+    color: var(--color-warning);
     border: 1px solid rgba(251,191,36,0.3);
     border-radius: 6px;
     padding: 0.42rem 1.1rem;
@@ -137,12 +140,12 @@
 }
 .btn-nav-dashboard:hover {
     background: rgba(251,191,36,0.25);
-    color: #fbbf24;
+    color: var(--color-warning);
 }
 
 .btn-nav-logout {
     background: rgba(239, 68, 68, 0.12);
-    color: #f87171;
+    color: var(--color-danger);
     border: 1px solid rgba(239,68,68,0.25);
     border-radius: 6px;
     padding: 0.42rem 1rem;
@@ -152,7 +155,7 @@
 }
 .btn-nav-logout:hover {
     background: rgba(239,68,68,0.22);
-    color: #fca5a5;
+    color: var(--color-danger-soft);
 }
 
 /* ── SCROLL EFFECT ── */

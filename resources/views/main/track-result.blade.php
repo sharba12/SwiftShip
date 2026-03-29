@@ -1,205 +1,338 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Parcel - {{ config('app.name') }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-            border-radius: 0.5rem;
-            z-index: 1;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">
-                    {{ config('app.name', 'Parcel Tracker') }}
-                </a>
-                <div class="space-x-4">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600">Home</a>
-                    <a href="{{ route('track.page') }}" class="text-gray-700 hover:text-blue-600">Track</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.main')
 
-    <div class="container mx-auto px-4 py-8">
+@section('title', 'Track Parcel')
+
+@section('content')
+
+{{-- ═══════════════════ RESULT SECTION ═══════════════════ --}}
+<section class="py-5 section-dark">
+    <div class="container">
+
         @if($parcel)
-            <!-- Parcel Found -->
-            <div class="max-w-6xl mx-auto">
-                <!-- Header -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Tracking Details</h1>
-                    <p class="text-gray-600">Tracking ID: <span class="font-semibold text-blue-600">{{ $parcel->tracking_id }}</span></p>
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                {{-- HEADER --}}
+                <div class="text-center mb-5 fade-up">
+                    <span class="section-badge">Tracking Result</span>
+                    <h1 class="fw-bold display-5 text-white mt-3">Parcel Found</h1>
                 </div>
 
-                <!-- Status Badge -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <h2 class="text-xl font-bold mb-3">Current Status</h2>
-                    <div class="flex items-center gap-3">
-                        <span class="px-4 py-2 rounded-full text-lg font-semibold
-                            @if($parcel->status == 'delivered') bg-green-100 text-green-800
-                            @elseif($parcel->status == 'pending') bg-yellow-100 text-yellow-800
-                            @elseif($parcel->status == 'in_transit' || $parcel->status == 'out_for_delivery') bg-blue-100 text-blue-800
-                            @else bg-red-100 text-red-800
-                            @endif">
+                {{-- PARCEL INFO CARD --}}
+                <div class="result-card fade-up" style="animation-delay:0.1s">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                        <div>
+                            <p class="result-label">Tracking Number</p>
+                            <h4 class="text-white fw-bold mb-0">{{ $parcel->tracking_id }}</h4>
+                        </div>
+                        <span class="status-pill status-{{ strtolower(str_replace(['_', ' '], '-', $parcel->status)) }}">
                             {{ ucfirst(str_replace('_', ' ', $parcel->status)) }}
                         </span>
                     </div>
-                </div>
 
-                <!-- Live Map - Show for in_transit and out_for_delivery -->
-                @if(in_array($parcel->status, ['in_transit', 'out_for_delivery']))
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold">Live Location</h2>
-                        <span class="text-sm text-green-600 font-semibold">🟢 Tracking Active</span>
-                    </div>
-                    <div id="map" class="mb-2"></div>
-                    <p class="text-sm text-gray-600">Location updates every 10 seconds</p>
-                </div>
-                @endif
+                    <hr class="result-divider">
 
-                <!-- Parcel Details -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-lg font-bold mb-4">Sender Information</h3>
-                        <div class="space-y-2">
-                            <p class="text-gray-600">Name</p>
-                            <p class="font-semibold">{{ $parcel->sender_name }}</p>
-                            <p class="text-gray-600 mt-3">From</p>
-                            <p class="text-sm">{{ $parcel->address_from }}</p>
+                    <div class="row g-4">
+                        <div class="col-sm-6 col-md-3">
+                            <p class="result-label">Sender</p>
+                            <p class="result-value">{{ $parcel->sender_name ?? '—' }}</p>
                         </div>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-lg font-bold mb-4">Receiver Information</h3>
-                        <div class="space-y-2">
-                            <p class="text-gray-600">Name</p>
-                            <p class="font-semibold">{{ $parcel->receiver_name }}</p>
-                            <p class="text-gray-600 mt-3">Contact</p>
-                            <p class="text-sm">{{ $parcel->receiver_contact }}</p>
-                            <p class="text-gray-600 mt-3">To</p>
-                            <p class="text-sm">{{ $parcel->address_to }}</p>
+                        <div class="col-sm-6 col-md-3">
+                            <p class="result-label">Receiver</p>
+                            <p class="result-value">{{ $parcel->receiver_name ?? '—' }}</p>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <p class="result-label">From</p>
+                            <p class="result-value">{{ $parcel->address_from ?? '—' }}</p>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <p class="result-label">To</p>
+                            <p class="result-value">{{ $parcel->address_to ?? '—' }}</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Parcel Info -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                    <h3 class="text-lg font-bold mb-4">Parcel Information</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div>
-                            <p class="text-gray-600 text-sm">Weight</p>
-                            <p class="font-semibold">{{ $parcel->weight }} kg</p>
+                {{-- PARCEL DETAILS ROW --}}
+                <div class="row g-4 mt-1">
+                    <div class="col-md-6 fade-up" style="animation-delay:0.15s">
+                        <div class="detail-card h-100">
+                            <h5 class="text-white fw-bold mb-3">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" class="me-2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Sender Details
+                            </h5>
+                            <div class="detail-row">
+                                <span class="detail-key">Name</span>
+                                <span class="detail-val">{{ $parcel->sender_name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-key">Address</span>
+                                <span class="detail-val">{{ $parcel->address_from ?? '—' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-up" style="animation-delay:0.2s">
+                        <div class="detail-card h-100">
+                            <h5 class="text-white fw-bold mb-3">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" class="me-2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Receiver Details
+                            </h5>
+                            <div class="detail-row">
+                                <span class="detail-key">Name</span>
+                                <span class="detail-val">{{ $parcel->receiver_name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-key">Contact</span>
+                                <span class="detail-val">{{ $parcel->receiver_contact ?? '—' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-key">Address</span>
+                                <span class="detail-val">{{ $parcel->address_to ?? '—' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- PARCEL INFO --}}
+                <div class="detail-card mt-4 fade-up" style="animation-delay:0.25s">
+                    <h5 class="text-white fw-bold mb-3">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" stroke-width="2" class="me-2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                        Parcel Information
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <p class="result-label">Weight</p>
+                            <p class="result-value">{{ $parcel->weight ?? '—' }} kg</p>
                         </div>
                         @if($parcel->in_transit_at)
-                        <div>
-                            <p class="text-gray-600 text-sm">In Transit</p>
-                            <p class="font-semibold text-sm">{{ $parcel->in_transit_at->format('M d, h:i A') }}</p>
+                        <div class="col-6 col-md-3">
+                            <p class="result-label">In Transit</p>
+                            <p class="result-value">{{ $parcel->in_transit_at->format('M d, h:i A') }}</p>
                         </div>
                         @endif
                         @if($parcel->out_for_delivery_at)
-                        <div>
-                            <p class="text-gray-600 text-sm">Out for Delivery</p>
-                            <p class="font-semibold text-sm">{{ $parcel->out_for_delivery_at->format('M d, h:i A') }}</p>
+                        <div class="col-6 col-md-3">
+                            <p class="result-label">Out for Delivery</p>
+                            <p class="result-value">{{ $parcel->out_for_delivery_at->format('M d, h:i A') }}</p>
                         </div>
                         @endif
                         @if($parcel->delivered_at)
-                        <div>
-                            <p class="text-gray-600 text-sm">Delivered</p>
-                            <p class="font-semibold text-sm">{{ $parcel->delivered_at->format('M d, h:i A') }}</p>
+                        <div class="col-6 col-md-3">
+                            <p class="result-label">Delivered</p>
+                            <p class="result-value" style="color:var(--color-success)">{{ $parcel->delivered_at->format('M d, h:i A') }}</p>
                         </div>
                         @endif
                     </div>
                 </div>
 
-                <!-- Timeline -->
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-lg font-bold mb-4">Delivery Timeline</h3>
-                    
-                    @if($parcel->timelines && $parcel->timelines->count() > 0)
-                        <div class="space-y-4">
-                            @foreach($parcel->timelines as $timeline)
-                            <div class="flex items-start border-l-4 border-blue-500 pl-4 py-2">
-                                <div class="flex-1">
-                                    <p class="font-semibold text-gray-800">{{ ucfirst(str_replace('_', ' ', $timeline->status)) }}</p>
-                                    @if($timeline->notes)
-                                    <p class="text-gray-600 text-sm mt-1">{{ $timeline->notes }}</p>
-                                    @endif
-                                    <p class="text-gray-400 text-xs mt-1">{{ $timeline->created_at->format('M d, Y h:i A') }}</p>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-gray-500">No timeline entries available</p>
-                    @endif
+                {{-- LIVE MAP --}}
+                @if(in_array($parcel->status, ['in_transit', 'out_for_delivery']))
+                <div class="detail-card mt-4 fade-up" style="animation-delay:0.3s">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="text-white fw-bold mb-0">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" class="me-2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Live Location
+                        </h5>
+                        <span class="live-badge"><span class="live-dot"></span> Tracking Active</span>
+                    </div>
+                    <div class="map-wrap">
+                        <div id="map" style="height:400px;"></div>
+                    </div>
+                    <p class="text-muted-light mt-2" style="font-size:0.78rem;">Location updates every 10 seconds</p>
                 </div>
+                @endif
+
+                {{-- TIMELINE --}}
+                @if($parcel->timelines && $parcel->timelines->count() > 0)
+                <div class="detail-card mt-4 fade-up" style="animation-delay:0.35s">
+                    <h5 class="text-white fw-bold mb-4">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-violet)" stroke-width="2" class="me-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Delivery Timeline
+                    </h5>
+                    <div class="timeline">
+                        @foreach($parcel->timelines->sortByDesc('created_at') as $timeline)
+                        <div class="timeline-item {{ $loop->first ? 'timeline-item-active' : '' }}">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <p class="timeline-status">{{ ucfirst(str_replace('_', ' ', $timeline->status)) }}</p>
+                                @if($timeline->notes)
+                                <p class="timeline-note">{{ $timeline->notes }}</p>
+                                @endif
+                                <p class="timeline-time">{{ $timeline->created_at->format('M d, Y · h:i A') }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- BACK BUTTON --}}
+                <div class="text-center mt-4 fade-up" style="animation-delay:0.4s">
+                    <a href="{{ route('track.page') }}" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                        ← Track Another Parcel
+                    </a>
+                </div>
+
             </div>
+        </div>
+
         @else
-            <!-- Parcel Not Found -->
-            <div class="max-w-2xl mx-auto">
-                <div class="bg-white rounded-lg shadow-md p-8 text-center">
-                    <div class="text-6xl mb-4">📦</div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Parcel Not Found</h2>
-                    <p class="text-gray-600 mb-6">We couldn't find a parcel with that tracking number.</p>
-                    <a href="{{ route('track.page') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
+        {{-- PARCEL NOT FOUND --}}
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="not-found-card text-center fade-up">
+                    <div style="font-size:4rem;">📦</div>
+                    <h2 class="fw-bold text-white mt-3">Parcel Not Found</h2>
+                    <p class="text-muted-light mt-2">We couldn't find a parcel with that tracking number. Please check and try again.</p>
+                    <a href="{{ route('track.page') }}" class="btn btn-sky btn-lg px-5 rounded-pill mt-3">
                         Try Again
                     </a>
                 </div>
             </div>
-        @endif
-    </div>
-
-    @if($parcel && in_array($parcel->status, ['in_transit', 'out_for_delivery']))
-    <script>
-        // Initialize map with default or actual coordinates
-        const initialLat = {{ $parcel->current_lat ?? 10.0261 }};
-        const initialLng = {{ $parcel->current_lng ?? 76.3125 }};
-        
-        const map = L.map('map').setView([initialLat, initialLng], 13);
-        
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19
-        }).addTo(map);
-        
-        // Add marker for parcel
-        const marker = L.marker([initialLat, initialLng]).addTo(map);
-        marker.bindPopup('<b>Parcel Location</b><br>{{ $parcel->tracking_id }}').openPopup();
-        
-        // Update location every 10 seconds
-        setInterval(function() {
-            fetch("{{ route('parcel.location', $parcel->id) }}")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.lat && data.lng) {
-                        const newLatLng = L.latLng(data.lat, data.lng);
-                        marker.setLatLng(newLatLng);
-                        map.panTo(newLatLng);
-                    }
-                })
-                .catch(error => console.error('Error fetching location:', error));
-        }, 10000); // 10 seconds
-    </script>
-    @endif
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
         </div>
-    </footer>
-</body>
-</html>
+        @endif
+
+    </div>
+</section>
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endpush
+
+<style>
+.section-dark { background: var(--color-bg-section); min-height: 70vh; }
+.text-muted-light { color: rgba(255,255,255,0.45); font-size: 0.875rem; line-height: 1.75; }
+.text-sky { color: var(--color-primary); }
+
+.section-badge {
+    display:inline-block;
+    background:rgba(14,165,233,0.12);color:var(--color-primary);
+    border:1px solid rgba(14,165,233,0.3);border-radius:100px;
+    padding:0.3rem 1.1rem;font-size:0.78rem;font-weight:600;
+    letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* CARDS */
+.result-card, .detail-card, .not-found-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 2rem;
+}
+.result-label {
+    color: rgba(255,255,255,0.35);
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 4px;
+}
+.result-value { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 0; }
+.result-divider { border-color: rgba(255,255,255,0.07); margin: 1.5rem 0; }
+
+/* STATUS */
+.status-pill {
+    padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+}
+.status-delivered { background:rgba(52,211,153,0.12);color:var(--color-success);border:1px solid rgba(52,211,153,0.25); }
+.status-pending   { background:rgba(251,191,36,0.12);color:var(--color-warning);border:1px solid rgba(251,191,36,0.25); }
+.status-in-transit{ background:rgba(14,165,233,0.12);color:var(--color-primary);border:1px solid rgba(14,165,233,0.25); }
+.status-out-for-delivery { background:rgba(167,139,250,0.12);color:var(--color-violet);border:1px solid rgba(167,139,250,0.25); }
+.status-cancelled { background:rgba(239,68,68,0.12);color:var(--color-danger);border:1px solid rgba(239,68,68,0.25); }
+
+/* DETAIL ROWS */
+.detail-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-key { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+.detail-val { color: rgba(255,255,255,0.85); font-size: 0.85rem; font-weight: 600; text-align: right; }
+
+/* LIVE BADGE */
+.live-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(52,211,153,0.1); color: var(--color-success);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 8px; padding: 0.3rem 0.75rem;
+    font-size: 0.75rem; font-weight: 600;
+}
+.live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 8px rgba(52,211,153,0.6);
+    animation: livePulse 2s infinite;
+}
+@keyframes livePulse { 0%, 100% { opacity:1; } 50% { opacity:0.4; } }
+
+/* MAP */
+.map-wrap { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 1.75rem; }
+.timeline::before {
+    content: ''; position: absolute; left: 7px; top: 0; bottom: 0;
+    width: 1px; background: rgba(255,255,255,0.08);
+}
+.timeline-item { position: relative; margin-bottom: 1.75rem; }
+.timeline-dot {
+    position: absolute; left: -1.75rem; top: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--color-bg-section); border: 2px solid rgba(255,255,255,0.2);
+    transition: all 0.2s;
+}
+.timeline-item-active .timeline-dot {
+    background: var(--color-primary); border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(14,165,233,0.5);
+}
+.timeline-status { color: rgba(255,255,255,0.85); font-weight: 600; font-size: 0.9rem; margin: 0 0 2px; }
+.timeline-time { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin: 0; }
+.timeline-note { color: rgba(255,255,255,0.45); font-size: 0.82rem; margin: 2px 0 0; }
+
+/* BTN */
+.btn-sky { background:var(--color-primary);color:var(--color-white);border:none;font-weight:600;transition:background 0.2s; }
+.btn-sky:hover { background:var(--color-primary-strong);color:var(--color-white); }
+
+/* FADE */
+.fade-up { opacity:0; transform:translateY(24px); animation:fadeUp 0.8s ease forwards; }
+@keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+</style>
+
+@if($parcel && in_array($parcel->status, ['in_transit', 'out_for_delivery']))
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const initialLat = {{ $parcel->current_lat ?? 10.0261 }};
+    const initialLng = {{ $parcel->current_lng ?? 76.3125 }};
+
+    const map = L.map('map', { zoomControl: true }).setView([initialLat, initialLng], 13);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+    }).addTo(map);
+
+    const icon = L.divIcon({
+        html: '<div style="width:14px;height:14px;background:var(--color-primary);border:3px solid var(--color-white);border-radius:50%;box-shadow:0 0 12px rgba(14,165,233,0.8);"></div>',
+        className: '', iconAnchor: [7, 7]
+    });
+
+    const marker = L.marker([initialLat, initialLng], { icon }).addTo(map)
+        .bindPopup('<b style="color:var(--color-primary)">Parcel Location</b><br>{{ $parcel->tracking_id }}').openPopup();
+
+    setInterval(function(){
+        fetch("{{ route('parcel.location', $parcel->id) }}")
+            .then(r => r.json())
+            .then(data => {
+                if(data.lat && data.lng){
+                    const ll = L.latLng(data.lat, data.lng);
+                    marker.setLatLng(ll);
+                    map.panTo(ll);
+                }
+            }).catch(() => {});
+    }, 10000);
+});
+</script>
+@endpush
+@endif
+
+@endsection

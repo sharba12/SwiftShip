@@ -15,6 +15,11 @@ class ParcelNotification extends Model
         'error_message',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function parcel()
     {
         return $this->belongsTo(Parcel::class);

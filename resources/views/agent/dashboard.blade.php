@@ -20,53 +20,53 @@
 
         <div class="col-6 col-md-3">
             <div class="kpi-card fade-in" style="animation-delay:0.05s">
-                <div class="kpi-icon-wrap" style="background:rgba(14,165,233,0.12);color:#0ea5e9;">
+                <div class="kpi-icon-wrap" style="background:rgba(14,165,233,0.12);color:var(--color-primary);">
                     <i class="bi bi-box-seam"></i>
                 </div>
                 <div>
                     <p class="kpi-label">Total</p>
                     <h2 class="kpi-value">{{ $total }}</h2>
                 </div>
-                <div class="kpi-bar" style="background:#0ea5e9;"></div>
+                <div class="kpi-bar" style="background:var(--color-primary);"></div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
             <div class="kpi-card fade-in" style="animation-delay:0.1s">
-                <div class="kpi-icon-wrap" style="background:rgba(251,191,36,0.12);color:#fbbf24;">
+                <div class="kpi-icon-wrap" style="background:rgba(251,191,36,0.12);color:var(--color-warning);">
                     <i class="bi bi-clock-history"></i>
                 </div>
                 <div>
                     <p class="kpi-label">Pending</p>
                     <h2 class="kpi-value">{{ $pending }}</h2>
                 </div>
-                <div class="kpi-bar" style="background:#fbbf24;"></div>
+                <div class="kpi-bar" style="background:var(--color-warning);"></div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
             <div class="kpi-card fade-in" style="animation-delay:0.15s">
-                <div class="kpi-icon-wrap" style="background:rgba(52,211,153,0.12);color:#34d399;">
+                <div class="kpi-icon-wrap" style="background:rgba(52,211,153,0.12);color:var(--color-success);">
                     <i class="bi bi-check-circle"></i>
                 </div>
                 <div>
                     <p class="kpi-label">Delivered</p>
                     <h2 class="kpi-value">{{ $delivered }}</h2>
                 </div>
-                <div class="kpi-bar" style="background:#34d399;"></div>
+                <div class="kpi-bar" style="background:var(--color-success);"></div>
             </div>
         </div>
 
         <div class="col-6 col-md-3">
             <div class="kpi-card fade-in" style="animation-delay:0.2s">
-                <div class="kpi-icon-wrap" style="background:rgba(248,113,113,0.12);color:#f87171;">
+                <div class="kpi-icon-wrap" style="background:rgba(248,113,113,0.12);color:var(--color-danger);">
                     <i class="bi bi-x-circle"></i>
                 </div>
                 <div>
                     <p class="kpi-label">Failed</p>
                     <h2 class="kpi-value">{{ $failed }}</h2>
                 </div>
-                <div class="kpi-bar" style="background:#f87171;"></div>
+                <div class="kpi-bar" style="background:var(--color-danger);"></div>
             </div>
         </div>
 
@@ -101,17 +101,17 @@
 <style>
 .dash-wrap { max-width: 1100px; }
 .dash-header { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; }
-.dash-title { font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin:0; }
+.dash-title { font-size:1.5rem;font-weight:800;color:var(--color-white);letter-spacing:-0.03em;margin:0; }
 .dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
 
 .btn-primary-action {
-    background:#0ea5e9;color:#fff;border:none;border-radius:8px;
+    background:var(--color-primary);color:var(--color-white);border:none;border-radius:8px;
     padding:0.55rem 1.2rem;font-size:0.85rem;font-weight:600;
     text-decoration:none;cursor:pointer;
     display:inline-flex;align-items:center;gap:0.4rem;
     transition:background 0.2s;white-space:nowrap;
 }
-.btn-primary-action:hover { background:#0284c7;color:#fff; }
+.btn-primary-action:hover { background:var(--color-primary-strong);color:var(--color-white); }
 
 /* KPI */
 .kpi-card {
@@ -129,7 +129,7 @@
     font-size:1.25rem;flex-shrink:0;
 }
 .kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
-.kpi-value { font-size:2rem;font-weight:800;color:#fff;line-height:1.1;margin:2px 0 0; }
+.kpi-value { font-size:2rem;font-weight:800;color:var(--color-white);line-height:1.1;margin:2px 0 0; }
 
 /* PROGRESS */
 .progress-card {
@@ -137,13 +137,13 @@
     border-radius:14px;padding:1.4rem;
 }
 .progress-label { font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.7); }
-.progress-pct { font-size:0.85rem;font-weight:700;color:#34d399; }
+.progress-pct { font-size:0.85rem;font-weight:700;color:var(--color-success); }
 .progress-track {
     height:8px;background:rgba(255,255,255,0.06);
     border-radius:100px;overflow:hidden;
 }
 .progress-fill {
-    height:100%;background:linear-gradient(90deg,#0ea5e9,#34d399);
+    height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-success));
     border-radius:100px;transition:width 1s ease;
 }
 .progress-sub { font-size:0.75rem;color:rgba(255,255,255,0.3);margin:0; }
@@ -155,7 +155,7 @@
     display:flex;align-items:center;justify-content:space-between;
     flex-wrap:wrap;gap:1rem;
 }
-.cta-title { font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 3px; }
+.cta-title { font-size:0.95rem;font-weight:700;color:var(--color-white);margin:0 0 3px; }
 .cta-sub { font-size:0.78rem;color:rgba(255,255,255,0.35);margin:0; }
 
 .fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }

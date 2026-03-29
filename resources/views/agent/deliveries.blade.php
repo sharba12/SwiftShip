@@ -1,123 +1,117 @@
-@extends('layouts.agent')
+@extends('agent.layout')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- Page Header -->
-    <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">My Deliveries</h1>
-        <p class="text-gray-600">Manage and track your assigned parcels</p>
+
+<div style="max-width:1100px;">
+
+    {{-- HEADER --}}
+    <div class="dash-header fade-in">
+        <div>
+            <h1 class="dash-title">My Deliveries</h1>
+            <p class="dash-sub">Manage and track your assigned parcels</p>
+        </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 bg-blue-100 rounded-full p-3">
-                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-                    </svg>
+    {{-- KPI CARDS --}}
+    <div class="row g-4 mt-1">
+        <div class="col-6 col-md-3">
+            <div class="kpi-card fade-in" style="animation-delay:0.05s">
+                <div class="kpi-icon-wrap" style="background:rgba(14,165,233,0.12);color:var(--color-primary);">
+                    <i class="bi bi-box-seam"></i>
                 </div>
-                <div class="ml-4">
-                    <p class="text-gray-600 text-sm">Total</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $total }}</p>
+                <div>
+                    <p class="kpi-label">Total</p>
+                    <h2 class="kpi-value">{{ $total }}</h2>
                 </div>
+                <div class="kpi-bar" style="background:var(--color-primary);"></div>
             </div>
         </div>
-
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 bg-yellow-100 rounded-full p-3">
-                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+        <div class="col-6 col-md-3">
+            <div class="kpi-card fade-in" style="animation-delay:0.1s">
+                <div class="kpi-icon-wrap" style="background:rgba(251,191,36,0.12);color:var(--color-warning);">
+                    <i class="bi bi-clock-history"></i>
                 </div>
-                <div class="ml-4">
-                    <p class="text-gray-600 text-sm">Pending</p>
-                    <p class="text-2xl font-bold text-yellow-600">{{ $pending }}</p>
+                <div>
+                    <p class="kpi-label">Pending</p>
+                    <h2 class="kpi-value">{{ $pending }}</h2>
                 </div>
+                <div class="kpi-bar" style="background:var(--color-warning);"></div>
             </div>
         </div>
-
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 bg-green-100 rounded-full p-3">
-                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+        <div class="col-6 col-md-3">
+            <div class="kpi-card fade-in" style="animation-delay:0.15s">
+                <div class="kpi-icon-wrap" style="background:rgba(52,211,153,0.12);color:var(--color-success);">
+                    <i class="bi bi-check-circle"></i>
                 </div>
-                <div class="ml-4">
-                    <p class="text-gray-600 text-sm">Delivered</p>
-                    <p class="text-2xl font-bold text-green-600">{{ $delivered }}</p>
+                <div>
+                    <p class="kpi-label">Delivered</p>
+                    <h2 class="kpi-value">{{ $delivered }}</h2>
                 </div>
+                <div class="kpi-bar" style="background:var(--color-success);"></div>
             </div>
         </div>
-
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 bg-red-100 rounded-full p-3">
-                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+        <div class="col-6 col-md-3">
+            <div class="kpi-card fade-in" style="animation-delay:0.2s">
+                <div class="kpi-icon-wrap" style="background:rgba(248,113,113,0.12);color:var(--color-danger);">
+                    <i class="bi bi-x-circle"></i>
                 </div>
-                <div class="ml-4">
-                    <p class="text-gray-600 text-sm">Failed</p>
-                    <p class="text-2xl font-bold text-red-600">{{ $failed }}</p>
+                <div>
+                    <p class="kpi-label">Failed</p>
+                    <h2 class="kpi-value">{{ $failed }}</h2>
                 </div>
+                <div class="kpi-bar" style="background:var(--color-danger);"></div>
             </div>
         </div>
     </div>
 
-    <!-- Deliveries Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="p-6 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800">All Deliveries</h2>
+    {{-- DELIVERIES TABLE --}}
+    <div class="table-card mt-4 fade-in" style="animation-delay:0.25s">
+        <div class="table-card-head">
+            <h5 class="table-card-title">All Deliveries</h5>
         </div>
 
         @if($parcels->count() > 0)
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tracking ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receiver</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" style="font-size:0.875rem;">
+                <thead>
+                    <tr class="table-head-row">
+                        <th class="th-cell">Tracking ID</th>
+                        <th class="th-cell">Receiver</th>
+                        <th class="th-cell">Destination</th>
+                        <th class="th-cell">Status</th>
+                        <th class="th-cell">Weight</th>
+                        <th class="th-cell">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @foreach($parcels as $parcel)
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-sm font-semibold text-blue-600">{{ $parcel->tracking_id }}</span>
+                    <tr class="table-row">
+                        <td class="td-cell">
+                            <span style="color:var(--color-primary);font-weight:600;">{{ $parcel->tracking_id }}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $parcel->receiver_name }}</div>
-                            <div class="text-sm text-gray-500">{{ $parcel->receiver_contact }}</div>
+                        <td class="td-cell">
+                            <div style="color:rgba(255,255,255,0.85);font-weight:600;">{{ $parcel->receiver_name }}</div>
+                            <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;">{{ $parcel->receiver_contact }}</div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $parcel->address_to }}">
+                        <td class="td-cell">
+                            <div style="color:rgba(255,255,255,0.7);max-width:200px;" class="text-truncate" title="{{ $parcel->address_to }}">
                                 {{ $parcel->address_to }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                @if($parcel->status == 'delivered') bg-green-100 text-green-800
-                                @elseif($parcel->status == 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($parcel->status == 'in_transit' || $parcel->status == 'out_for_delivery') bg-blue-100 text-blue-800
-                                @else bg-red-100 text-red-800
+                        <td class="td-cell">
+                            <span class="status-pill
+                                @if($parcel->status == 'delivered') sp-delivered
+                                @elseif($parcel->status == 'pending') sp-pending
+                                @elseif($parcel->status == 'in_transit' || $parcel->status == 'out_for_delivery') sp-transit
+                                @else sp-failed
                                 @endif">
                                 {{ ucfirst(str_replace('_', ' ', $parcel->status)) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $parcel->weight }} kg
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('agent.delivery.show', $parcel->id) }}" 
-                               class="text-blue-600 hover:text-blue-900 mr-3">
-                                View Details
+                        <td class="td-cell" style="color:rgba(255,255,255,0.7);">{{ $parcel->weight }} kg</td>
+                        <td class="td-cell">
+                            <a href="{{ route('agent.delivery.show', $parcel->id) }}" class="action-link">
+                                View Details <i class="bi bi-arrow-right"></i>
                             </a>
                         </td>
                     </tr>
@@ -126,14 +120,57 @@
             </table>
         </div>
         @else
-        <div class="p-8 text-center">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-            </svg>
-            <p class="mt-4 text-lg text-gray-600">No deliveries assigned yet</p>
-            <p class="text-sm text-gray-500">Check back later for new assignments</p>
+        <div style="padding:3rem;text-align:center;">
+            <i class="bi bi-inbox" style="font-size:2.5rem;color:rgba(255,255,255,0.15);"></i>
+            <p style="color:rgba(255,255,255,0.4);margin:1rem 0 0;font-size:0.9rem;">No deliveries assigned yet</p>
+            <p style="color:rgba(255,255,255,0.25);font-size:0.82rem;">Check back later for new assignments</p>
         </div>
         @endif
     </div>
+
 </div>
+
+<style>
+.dash-header { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; }
+.dash-title { font-size:1.5rem;font-weight:800;color:var(--color-white);letter-spacing:-0.03em;margin:0; }
+.dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+
+/* KPI */
+.kpi-card {
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+    border-radius:14px;padding:1.4rem 1.4rem 1.2rem;
+    display:flex;align-items:center;gap:1rem;
+    position:relative;overflow:hidden;
+    transition:transform 0.25s,border-color 0.25s;
+}
+.kpi-card:hover { transform:translateY(-4px);border-color:rgba(255,255,255,0.14); }
+.kpi-bar { position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0.5; }
+.kpi-icon-wrap { width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0; }
+.kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
+.kpi-value { font-size:2rem;font-weight:800;color:var(--color-white);line-height:1.1;margin:2px 0 0; }
+
+/* TABLE */
+.table-card { background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden; }
+.table-card-head { padding:1.1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.06); }
+.table-card-title { font-size:0.95rem;font-weight:700;color:var(--color-white);margin:0; }
+.table-head-row { background:rgba(255,255,255,0.03); }
+.th-cell { padding:0.8rem 1rem !important;font-weight:600;color:rgba(255,255,255,0.4);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid rgba(255,255,255,0.06) !important; }
+.table-row { transition:background 0.15s; }
+.table-row:hover { background:rgba(255,255,255,0.03) !important; }
+.td-cell { padding:0.8rem 1rem !important;vertical-align:middle;border-bottom:1px solid rgba(255,255,255,0.04) !important; }
+
+/* STATUS */
+.status-pill { padding:0.25rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em; }
+.sp-delivered { background:rgba(52,211,153,0.12);color:var(--color-success); }
+.sp-pending { background:rgba(251,191,36,0.12);color:var(--color-warning); }
+.sp-transit { background:rgba(14,165,233,0.12);color:var(--color-primary); }
+.sp-failed { background:rgba(248,113,113,0.12);color:var(--color-danger); }
+
+.action-link { color:var(--color-primary);font-size:0.82rem;font-weight:600;text-decoration:none;transition:color 0.2s; }
+.action-link:hover { color:var(--color-primary-soft); }
+
+.fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
+@keyframes fadeIn { to { opacity:1;transform:translateY(0); } }
+</style>
+
 @endsection

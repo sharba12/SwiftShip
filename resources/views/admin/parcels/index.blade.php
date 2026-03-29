@@ -4,7 +4,7 @@
 <style>
 /* Parcel Management Page Specific Styles */
 .page-header {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-strong) 100%);
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 1.5rem;
@@ -45,7 +45,7 @@
 }
 
 .btn-create {
-    background: #0ea5e9;
+    background: var(--color-primary);
     color: white;
     border: none;
     padding: 0.65rem 1.5rem;
@@ -60,7 +60,7 @@
 }
 
 .btn-create:hover {
-    background: #0284c7;
+    background: var(--color-primary-strong);
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
@@ -78,21 +78,21 @@
 }
 
 .btn-search {
-    background: #0ea5e9;
+    background: var(--color-primary);
     color: white;
 }
 
 .btn-search:hover {
-    background: #0284c7;
+    background: var(--color-primary-strong);
 }
 
 .btn-clear {
     background: #f3f4f6;
-    color: #6b7280;
+    color: var(--color-text-muted);
 }
 
 .btn-clear:hover {
-    background: #e5e7eb;
+    background: var(--color-border);
 }
 
 .table-card {
@@ -128,7 +128,7 @@
 }
 
 .parcels-table tbody tr {
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--color-surface-muted);
     transition: background-color 0.15s;
 }
 
@@ -144,7 +144,7 @@
 .tracking-id {
     font-family: 'Courier New', monospace;
     font-weight: 700;
-    color: #0ea5e9;
+    color: var(--color-primary);
     font-size: 0.85rem;
     white-space: nowrap;
 }
@@ -157,13 +157,13 @@
 
 .customer-name {
     font-weight: 600;
-    color: #111827;
+    color: var(--color-text-strong);
     font-size: 0.875rem;
 }
 
 .customer-email {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
 }
 
 .address-block {
@@ -203,7 +203,7 @@
 
 .address-text {
     font-size: 0.8rem;
-    color: #374151;
+    color: var(--color-text);
     line-height: 1.4;
 }
 
@@ -268,7 +268,7 @@
 
 .qr-code-btn {
     background: white;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--color-border);
     padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
@@ -276,12 +276,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #6b7280;
+    color: var(--color-text-muted);
 }
 
 .qr-code-btn:hover {
-    border-color: #0ea5e9;
-    color: #0ea5e9;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
     background: #f0f9ff;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .btn-view-track {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-strong) 100%);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -322,7 +322,7 @@
 .no-results {
     text-align: center;
     padding: 3rem;
-    color: #9ca3af;
+    color: var(--color-text-subtle);
 }
 
 .no-results i {
@@ -343,7 +343,7 @@
 }
 
 .modal-header {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-strong) 100%);
     color: white;
     border-radius: 12px 12px 0 0;
     border: none;
@@ -557,7 +557,7 @@ function showQRCode(trackingId) {
         text: '{{ url("/track") }}/' + trackingId,
         width: 300,
         height: 300,
-        colorDark: "#0ea5e9",
+        colorDark: "#111827",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
     });

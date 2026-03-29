@@ -1,322 +1,362 @@
-@extends('layouts.agent')
+@extends('agent.layout')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="max-w-2xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">QR Code Scanner</h1>
-            <p class="text-gray-600">Scan parcel QR codes for quick updates</p>
-        </div>
+<div style="max-width:700px;">
+    <div class="text-center mb-4 fade-in">
+        <h1 class="page-title">QR Code Scanner</h1>
+        <p class="page-sub">Scan parcel QR codes for quick updates</p>
+    </div>
 
-        <!-- Scanner Card -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <!-- Camera Preview -->
-            <div id="scanner-container" class="relative">
-                <video id="qr-video" class="w-full rounded-lg border-2 border-gray-300"></video>
-                <div id="scanner-overlay" class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div class="border-4 border-blue-500 w-64 h-64 rounded-lg"></div>
-                </div>
-            </div>
+    <div id="scanner-alert" class="scanner-alert" style="display:none;"></div>
 
-            <!-- Controls -->
-            <div class="flex gap-4 mt-6">
-                <button id="start-scan" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg">
-                    📷 Start Scanner
-                </button>
-                <button id="stop-scan" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg hidden">
-                    ⏹ Stop Scanner
-                </button>
-            </div>
-
-            <!-- Status Message -->
-            <div id="scan-status" class="mt-4 text-center text-gray-600 hidden">
-                <p class="font-semibold">Ready to scan...</p>
-                <p class="text-sm">Position the QR code within the frame</p>
-            </div>
-
-            <!-- Manual Entry -->
-            <div class="mt-6 pt-6 border-t border-gray-200">
-                <p class="text-gray-700 font-semibold mb-2">Or enter tracking ID manually:</p>
-                <div class="flex gap-2">
-                    <input 
-                        type="text" 
-                        id="manual-tracking-id" 
-                        placeholder="Enter tracking ID"
-                        class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button 
-                        id="manual-submit" 
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
-                        Submit
-                    </button>
-                </div>
+    <div class="scanner-card fade-in" style="animation-delay:0.08s">
+        <div id="scanner-container" style="position:relative;">
+            <div id="qr-reader" style="width:100%;min-height:280px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);"></div>
+            <div id="scanner-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;display:none;">
+                <div style="border:3px solid var(--color-primary);width:200px;height:200px;border-radius:12px;"></div>
             </div>
         </div>
 
-        <!-- Result Card -->
-        <div id="result-card" class="bg-white rounded-lg shadow-lg p-6 hidden">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Parcel Found</h3>
-                <span id="status-badge" class="px-3 py-1 rounded-full text-sm font-semibold"></span>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <p class="text-gray-600 text-sm">Tracking ID</p>
-                    <p id="result-tracking-id" class="font-semibold text-lg text-blue-600"></p>
-                </div>
-                <div>
-                    <p class="text-gray-600 text-sm">Receiver</p>
-                    <p id="result-receiver" class="font-semibold"></p>
-                </div>
-                <div>
-                    <p class="text-gray-600 text-sm">Contact</p>
-                    <p id="result-contact" class="font-semibold"></p>
-                </div>
-                <div>
-                    <p class="text-gray-600 text-sm">Destination</p>
-                    <p id="result-address" class="text-sm"></p>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="mt-6 space-y-2">
-                <a id="view-details-btn" href="#" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg text-center">
-                    View Full Details
-                </a>
-                
-                <div class="grid grid-cols-3 gap-2">
-                    <button onclick="quickUpdate('picked_up')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-lg text-sm">
-                        📦 Pick Up
-                    </button>
-                    <button onclick="quickUpdate('in_transit')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg text-sm">
-                        🚚 In Transit
-                    </button>
-                    <button onclick="quickUpdate('delivered')" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg text-sm">
-                        ✓ Delivered
-                    </button>
-                </div>
-            </div>
-
-            <button onclick="scanAgain()" class="w-full mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded-lg">
-                Scan Another
+        <div class="d-flex gap-3 mt-4 flex-wrap">
+            <button id="start-scan" class="btn-agent btn-agent-green flex-fill">
+                <i class="bi bi-camera"></i> Start Scanner
+            </button>
+            <button id="stop-scan" class="btn-agent btn-agent-red flex-fill" style="display:none;">
+                <i class="bi bi-stop-circle"></i> Stop Scanner
             </button>
         </div>
 
-        <!-- Recent Scans -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mt-6">
-            <h3 class="text-lg font-bold text-gray-800 mb-4">Recent Scans</h3>
-            <div id="recent-scans" class="space-y-2">
-                <p class="text-gray-500 text-sm">No recent scans</p>
+        <div id="scan-status" class="mt-3 text-center" style="display:none;">
+            <p style="color:var(--color-success);font-weight:600;">Ready to scan...</p>
+            <p style="color:rgba(255,255,255,0.35);font-size:0.82rem;">Position the QR code within the frame</p>
+        </div>
+
+        <hr style="border-color:rgba(255,255,255,0.07);margin:1.5rem 0;">
+        <p style="color:rgba(255,255,255,0.6);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Or enter tracking ID manually:</p>
+        <div class="d-flex gap-2">
+            <input type="text" id="manual-tracking-id" placeholder="Enter tracking ID" class="form-control form-control-dark flex-fill">
+            <button id="manual-submit" class="btn-agent btn-agent-blue">Submit</button>
+        </div>
+    </div>
+
+    <div id="result-card" class="scanner-card mt-3 fade-in" style="display:none;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 style="color:var(--color-white);font-weight:700;margin:0;">Parcel Found</h5>
+            <span id="status-badge" class="status-pill"></span>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-6">
+                <p class="field-label">Tracking ID</p>
+                <p id="result-tracking-id" class="field-value" style="color:var(--color-primary);"></p>
             </div>
+            <div class="col-6">
+                <p class="field-label">Receiver</p>
+                <p id="result-receiver" class="field-value"></p>
+            </div>
+            <div class="col-6">
+                <p class="field-label">Contact</p>
+                <p id="result-contact" class="field-value"></p>
+            </div>
+            <div class="col-6">
+                <p class="field-label">Destination</p>
+                <p id="result-address" class="field-value" style="font-size:0.82rem;"></p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a id="view-details-btn" href="#" class="btn-agent btn-agent-blue w-100 text-center d-block py-2 mb-2">
+                View Full Details
+            </a>
+            <div class="row g-2">
+                <div class="col-4">
+                    <button onclick="quickUpdate('picked_up')" class="btn-agent btn-agent-yellow w-100 py-2" style="font-size:0.78rem;">
+                        <i class="bi bi-box-seam"></i> Pick Up
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button onclick="quickUpdate('in_transit')" class="btn-agent btn-agent-blue w-100 py-2" style="font-size:0.78rem;">
+                        <i class="bi bi-truck"></i> In Transit
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button onclick="quickUpdate('delivered')" class="btn-agent btn-agent-green w-100 py-2" style="font-size:0.78rem;">
+                        <i class="bi bi-check2-circle"></i> Delivered
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="scanAgain()" class="btn-agent btn-agent-gray w-100 mt-3">Scan Another</button>
+    </div>
+
+    <div class="scanner-card mt-3 fade-in" style="animation-delay:0.12s">
+        <h5 style="color:var(--color-white);font-weight:700;margin:0 0 1rem;">Recent Scans</h5>
+        <div id="recent-scans">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;">No recent scans</p>
         </div>
     </div>
 </div>
 
+<style>
+.page-title { font-size:1.5rem;font-weight:800;color:var(--color-white);margin:0; }
+.page-sub { font-size:0.82rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+
+.scanner-card {
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+    border-radius:14px;padding:1.5rem;
+}
+
+.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.field-value { font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
+
+.form-control-dark {
+    background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.1) !important;
+    color:var(--color-white) !important;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.9rem;
+}
+.form-control-dark::placeholder { color:rgba(255,255,255,0.25) !important; }
+.form-control-dark:focus { border-color:var(--color-primary) !important;box-shadow:0 0 0 3px rgba(14,165,233,0.12) !important; }
+
+.btn-agent { border:none;border-radius:8px;padding:0.55rem 1rem;font-size:0.85rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;transition:all 0.2s;text-decoration:none; }
+.btn-agent-blue { background:var(--color-primary);color:var(--color-white); }
+.btn-agent-blue:hover { background:var(--color-primary-strong);color:var(--color-white); }
+.btn-agent-green { background:var(--color-success-strong);color:var(--color-white); }
+.btn-agent-green:hover { background:var(--color-success-deep);color:var(--color-white); }
+.btn-agent-red { background:rgba(239,68,68,0.15);color:var(--color-danger);border:1px solid rgba(239,68,68,0.25); }
+.btn-agent-red:hover { background:rgba(239,68,68,0.25); }
+.btn-agent-yellow { background:rgba(251,191,36,0.15);color:var(--color-warning);border:1px solid rgba(251,191,36,0.25); }
+.btn-agent-yellow:hover { background:rgba(251,191,36,0.25); }
+.btn-agent-gray { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1); }
+.btn-agent-gray:hover { background:rgba(255,255,255,0.1);color:var(--color-white); }
+
+.status-pill { padding:0.25rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:700;text-transform:uppercase; }
+
+.recent-scan-item {
+    display:flex;justify-content:space-between;align-items:center;
+    padding:0.6rem 0.8rem;background:rgba(255,255,255,0.03);
+    border-radius:8px;margin-bottom:0.4rem;
+}
+
+.scanner-alert {
+    border: 1px solid rgba(248,113,113,0.45);
+    background: rgba(127,29,29,0.4);
+    color: var(--color-alert-error-text);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.scanner-alert.success {
+    border-color: rgba(74,222,128,0.45);
+    background: rgba(21,128,61,0.3);
+    color: var(--color-alert-success-text);
+}
+
+.fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
+@keyframes fadeIn { to { opacity:1;transform:translateY(0); } }
+</style>
+
 @push('scripts')
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script>
-let html5QrCode = null;
-let currentParcel = null;
-let recentScans = [];
+document.addEventListener('DOMContentLoaded', () => {
+    let html5QrCode = null;
+    let scannerActive = false;
+    let currentParcel = null;
+    const recentScans = [];
 
-const startBtn = document.getElementById('start-scan');
-const stopBtn = document.getElementById('stop-scan');
-const scanStatus = document.getElementById('scan-status');
-const resultCard = document.getElementById('result-card');
-const manualInput = document.getElementById('manual-tracking-id');
-const manualSubmit = document.getElementById('manual-submit');
+    const startBtn = document.getElementById('start-scan');
+    const stopBtn = document.getElementById('stop-scan');
+    const scanStatus = document.getElementById('scan-status');
+    const resultCard = document.getElementById('result-card');
+    const manualInput = document.getElementById('manual-tracking-id');
+    const manualSubmit = document.getElementById('manual-submit');
+    const scannerAlert = document.getElementById('scanner-alert');
+    const overlay = document.getElementById('scanner-overlay');
+    const readerEl = document.getElementById('qr-reader');
 
-// Start scanner
-startBtn.addEventListener('click', function() {
-    html5QrCode = new Html5Qrcode("qr-video");
-    
-    html5QrCode.start(
-        { facingMode: "environment" },
-        {
-            fps: 10,
-            qrbox: { width: 250, height: 250 }
-        },
-        onScanSuccess,
-        onScanError
-    ).then(() => {
-        startBtn.classList.add('hidden');
-        stopBtn.classList.remove('hidden');
-        scanStatus.classList.remove('hidden');
-    }).catch(err => {
-        alert('Unable to start camera: ' + err);
-    });
-});
-
-// Stop scanner
-stopBtn.addEventListener('click', function() {
-    if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-            startBtn.classList.remove('hidden');
-            stopBtn.classList.add('hidden');
-            scanStatus.classList.add('hidden');
-        });
+    if (!startBtn || !stopBtn || !scanStatus || !resultCard || !manualInput || !manualSubmit || !scannerAlert || !overlay || !readerEl) {
+        return;
     }
-});
 
-// Handle successful scan
-function onScanSuccess(decodedText, decodedResult) {
-    console.log('Scanned:', decodedText);
-    
-    // Stop scanner
-    if (html5QrCode) {
-        html5QrCode.stop();
-        startBtn.classList.remove('hidden');
-        stopBtn.classList.add('hidden');
-        scanStatus.classList.add('hidden');
+    function showAlert(message, success = false) {
+        scannerAlert.innerHTML = `<i class="bi ${success ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2"></i>${message}`;
+        scannerAlert.classList.toggle('success', success);
+        scannerAlert.style.display = 'block';
+        if (!success) scannerAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    
-    // Process the scan
-    processTrackingId(decodedText);
-}
 
-function onScanError(error) {
-    // Ignore scan errors (camera is constantly scanning)
-}
+    function hideAlert() {
+        scannerAlert.style.display = 'none';
+        scannerAlert.classList.remove('success');
+        scannerAlert.innerHTML = '';
+    }
 
-// Process tracking ID
-function processTrackingId(trackingId) {
-    fetch('{{ route("agent.qr.scan") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ tracking_id: trackingId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
+    async function startScanner() {
+        hideAlert();
+        if (scannerActive) return;
+        if (typeof Html5Qrcode === 'undefined') {
+            showAlert('QR scanner library failed to load. Please refresh the page.');
+            return;
+        }
+
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Starting...';
+
+        try {
+            html5QrCode = new Html5Qrcode('qr-reader');
+            await html5QrCode.start(
+                { facingMode: 'environment' },
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                onScanSuccess,
+                () => {}
+            );
+            scannerActive = true;
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'inline-flex';
+            scanStatus.style.display = 'block';
+            overlay.style.display = 'flex';
+        } catch (err) {
+            showAlert('Unable to start camera. Check camera permission and try again.');
+        } finally {
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="bi bi-camera"></i> Start Scanner';
+        }
+    }
+
+    async function stopScanner() {
+        if (!html5QrCode || !scannerActive) return;
+        try {
+            await html5QrCode.stop();
+            await html5QrCode.clear();
+        } catch (_) {
+            // No-op for cleanup failures.
+        } finally {
+            html5QrCode = null;
+            scannerActive = false;
+            startBtn.style.display = 'inline-flex';
+            stopBtn.style.display = 'none';
+            scanStatus.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+    }
+
+    async function onScanSuccess(decodedText) {
+        await stopScanner();
+        processTrackingId(decodedText);
+    }
+
+    function processTrackingId(trackingId) {
+        hideAlert();
+        fetch('{{ route("agent.qr.scan") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ tracking_id: trackingId })
+        })
+        .then((r) => r.json())
+        .then((data) => {
+            if (!data.success) {
+                showAlert(data.message || 'Parcel not found');
+                return;
+            }
             displayParcel(data.parcel);
             addToRecentScans(data.parcel);
-        } else {
-            alert(data.message || 'Parcel not found');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error processing scan');
-    });
-}
-
-// Display parcel details
-function displayParcel(parcel) {
-    currentParcel = parcel;
-    
-    document.getElementById('result-tracking-id').textContent = parcel.tracking_id;
-    document.getElementById('result-receiver').textContent = parcel.receiver_name;
-    document.getElementById('result-contact').textContent = parcel.receiver_contact;
-    document.getElementById('result-address').textContent = parcel.address_to;
-    
-    const statusBadge = document.getElementById('status-badge');
-    statusBadge.textContent = parcel.status.replace('_', ' ').toUpperCase();
-    statusBadge.className = 'px-3 py-1 rounded-full text-sm font-semibold ';
-    
-    if (parcel.status === 'delivered') {
-        statusBadge.className += 'bg-green-100 text-green-800';
-    } else if (parcel.status === 'pending') {
-        statusBadge.className += 'bg-yellow-100 text-yellow-800';
-    } else {
-        statusBadge.className += 'bg-blue-100 text-blue-800';
-    }
-    
-    document.getElementById('view-details-btn').href = `/agent/deliveries/${parcel.id}`;
-    resultCard.classList.remove('hidden');
-}
-
-// Quick status update
-function quickUpdate(action) {
-    if (!currentParcel) return;
-    
-    if (!confirm('Update status to: ' + action.replace('_', ' ') + '?')) {
-        return;
-    }
-    
-    fetch('{{ route("agent.qr.quick-update") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            tracking_id: currentParcel.tracking_id,
-            action: action
+            showAlert('Parcel loaded successfully.', true);
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Status updated successfully!');
-            scanAgain();
-        } else {
-            alert(data.message || 'Update failed');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error updating status');
-    });
-}
+        .catch(() => showAlert('Error processing scan. Please try again.'));
+    }
 
-// Scan another parcel
-function scanAgain() {
-    resultCard.classList.add('hidden');
-    currentParcel = null;
-}
+    function displayParcel(parcel) {
+        currentParcel = parcel;
+        document.getElementById('result-tracking-id').textContent = parcel.tracking_id;
+        document.getElementById('result-receiver').textContent = parcel.receiver_name;
+        document.getElementById('result-contact').textContent = parcel.receiver_contact;
+        document.getElementById('result-address').textContent = parcel.address_to;
 
-// Manual entry
-manualSubmit.addEventListener('click', function() {
-    const trackingId = manualInput.value.trim();
-    if (trackingId) {
-        processTrackingId(trackingId);
+        const badge = document.getElementById('status-badge');
+        badge.textContent = parcel.status.replaceAll('_', ' ').toUpperCase();
+        if (parcel.status === 'delivered') badge.style.cssText = 'background:rgba(52,211,153,0.12);color:var(--color-success);';
+        else if (parcel.status === 'pending') badge.style.cssText = 'background:rgba(251,191,36,0.12);color:var(--color-warning);';
+        else badge.style.cssText = 'background:rgba(14,165,233,0.12);color:var(--color-primary);';
+
+        document.getElementById('view-details-btn').href = `/agent/deliveries/${parcel.id}`;
+        resultCard.style.display = 'block';
+    }
+
+    window.quickUpdate = function(action) {
+        if (!currentParcel) return;
+        if (!confirm('Update status to: ' + action.replace('_', ' ') + '?')) return;
+
+        hideAlert();
+        fetch('{{ route("agent.qr.quick-update") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ tracking_id: currentParcel.tracking_id, action })
+        })
+        .then((r) => r.json())
+        .then((data) => {
+            if (!data.success) {
+                showAlert(data.message || 'Update failed');
+                return;
+            }
+            showAlert('Status updated successfully.', true);
+            window.scanAgain();
+        })
+        .catch(() => showAlert('Error updating status.'));
+    };
+
+    window.scanAgain = function() {
+        resultCard.style.display = 'none';
+        currentParcel = null;
+        hideAlert();
+    };
+
+    manualSubmit.addEventListener('click', () => {
+        const v = manualInput.value.trim();
+        if (!v) return;
+        processTrackingId(v);
         manualInput.value = '';
-    }
-});
-
-manualInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        manualSubmit.click();
-    }
-});
-
-// Recent scans
-function addToRecentScans(parcel) {
-    recentScans.unshift({
-        tracking_id: parcel.tracking_id,
-        receiver: parcel.receiver_name,
-        time: new Date().toLocaleTimeString()
     });
-    
-    if (recentScans.length > 5) {
-        recentScans.pop();
-    }
-    
-    updateRecentScans();
-}
 
-function updateRecentScans() {
-    const container = document.getElementById('recent-scans');
-    
-    if (recentScans.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-sm">No recent scans</p>';
-        return;
+    manualInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            manualSubmit.click();
+        }
+    });
+
+    function addToRecentScans(parcel) {
+        recentScans.unshift({
+            tracking_id: parcel.tracking_id,
+            receiver: parcel.receiver_name,
+            time: new Date().toLocaleTimeString()
+        });
+        if (recentScans.length > 5) recentScans.pop();
+        updateRecentScans();
     }
-    
-    container.innerHTML = recentScans.map(scan => `
-        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-            <div>
-                <p class="font-semibold text-sm">${scan.tracking_id}</p>
-                <p class="text-xs text-gray-600">${scan.receiver}</p>
+
+    function updateRecentScans() {
+        const c = document.getElementById('recent-scans');
+        if (!recentScans.length) {
+            c.innerHTML = '<p style="color:rgba(255,255,255,0.35);font-size:0.85rem;">No recent scans</p>';
+            return;
+        }
+        c.innerHTML = recentScans.map((s) => `
+            <div class="recent-scan-item">
+                <div>
+                    <p style="color:var(--color-primary);font-weight:600;font-size:0.85rem;margin:0;">${s.tracking_id}</p>
+                    <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin:0;">${s.receiver}</p>
+                </div>
+                <span style="color:rgba(255,255,255,0.3);font-size:0.75rem;">${s.time}</span>
             </div>
-            <span class="text-xs text-gray-500">${scan.time}</span>
-        </div>
-    `).join('');
-}
+        `).join('');
+    }
+
+    startBtn.addEventListener('click', startScanner);
+    stopBtn.addEventListener('click', stopScanner);
+    window.addEventListener('beforeunload', stopScanner);
+});
 </script>
 @endpush
 @endsection

@@ -1,100 +1,92 @@
-@extends('layouts.agent')
+@extends('agent.layout')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- Back Button -->
-    <div class="mb-4">
-        <a href="{{ route('agent.deliveries') }}" class="text-blue-600 hover:text-blue-800">
-            ← Back to Deliveries
+<div style="max-width:900px;">
+    <div class="mb-3 fade-in">
+        <a href="{{ route('agent.deliveries') }}" class="back-link">
+            <i class="bi bi-arrow-left"></i> Back to Deliveries
         </a>
     </div>
 
-    <!-- Parcel Details Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 class="text-2xl font-bold mb-4">Delivery Details</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <p class="text-gray-600">Tracking ID</p>
-                <p class="font-semibold text-lg">{{ $parcel->tracking_id }}</p>
+    <div class="detail-card fade-in" style="animation-delay:0.05s">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+            <h2 class="card-heading">Delivery Details</h2>
+            <span class="status-badge
+                @if($parcel->status == 'delivered') status-delivered
+                @elseif($parcel->status == 'pending') status-pending
+                @elseif($parcel->status == 'in_transit' || $parcel->status == 'out_for_delivery') status-transit
+                @else status-failed
+                @endif">
+                {{ ucfirst(str_replace('_', ' ', $parcel->status)) }}
+            </span>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-6 col-md-3">
+                <p class="field-label">Tracking ID</p>
+                <p class="field-value" style="color:var(--color-primary);font-weight:700;">{{ $parcel->tracking_id }}</p>
             </div>
-            
-            <div>
-                <p class="text-gray-600">Status</p>
-                <span class="px-3 py-1 rounded-full text-sm font-semibold
-                    @if($parcel->status == 'delivered') bg-green-100 text-green-800
-                    @elseif($parcel->status == 'pending') bg-yellow-100 text-yellow-800
-                    @elseif($parcel->status == 'in_transit' || $parcel->status == 'out_for_delivery') bg-blue-100 text-blue-800
-                    @else bg-red-100 text-red-800
-                    @endif">
-                    {{ ucfirst(str_replace('_', ' ', $parcel->status)) }}
-                </span>
+            <div class="col-sm-6 col-md-3">
+                <p class="field-label">Sender</p>
+                <p class="field-value">{{ $parcel->sender_name }}</p>
             </div>
-            
-            <div>
-                <p class="text-gray-600">Sender</p>
-                <p class="font-semibold">{{ $parcel->sender_name }}</p>
+            <div class="col-sm-6 col-md-3">
+                <p class="field-label">Receiver</p>
+                <p class="field-value">{{ $parcel->receiver_name }}</p>
+                <p class="field-sub">{{ $parcel->receiver_contact }}</p>
             </div>
-            
-            <div>
-                <p class="text-gray-600">Receiver</p>
-                <p class="font-semibold">{{ $parcel->receiver_name }}</p>
-                <p class="text-sm text-gray-500">{{ $parcel->receiver_contact }}</p>
+            <div class="col-sm-6 col-md-3">
+                <p class="field-label">Weight</p>
+                <p class="field-value">{{ $parcel->weight }} kg</p>
             </div>
-            
-            <div>
-                <p class="text-gray-600">From</p>
-                <p class="text-sm">{{ $parcel->address_from }}</p>
+            <div class="col-sm-6">
+                <p class="field-label">From</p>
+                <p class="field-value">{{ $parcel->address_from }}</p>
             </div>
-            
-            <div>
-                <p class="text-gray-600">To</p>
-                <p class="text-sm">{{ $parcel->address_to }}</p>
-            </div>
-            
-            <div>
-                <p class="text-gray-600">Weight</p>
-                <p class="font-semibold">{{ $parcel->weight }} kg</p>
+            <div class="col-sm-6">
+                <p class="field-label">To</p>
+                <p class="field-value">{{ $parcel->address_to }}</p>
             </div>
         </div>
     </div>
 
-    <!-- GPS Tracking Card -->
     @if($parcel->status !== 'delivered')
-    <div class="bg-blue-50 rounded-lg shadow-md p-6 mb-6">
-        <h3 class="text-xl font-bold mb-4">Live GPS Tracking</h3>
-        
-        <div id="gps-status" class="mb-4">
-            <p class="text-gray-700">Enable GPS tracking to share your location with customers</p>
+    <div class="detail-card mt-3 fade-in" style="animation-delay:0.1s;border-color:rgba(14,165,233,0.2);">
+        <h3 class="card-heading mb-3">
+            <i class="bi bi-geo-alt" style="color:var(--color-primary);"></i> Live GPS Tracking
+        </h3>
+        <div id="gps-alert" class="gps-alert" style="display:none;"></div>
+
+        <div id="gps-status" class="mb-3">
+            <p style="color:rgba(255,255,255,0.5);">Enable GPS tracking to share your location with customers</p>
         </div>
-        
-        <div class="flex gap-4">
-            <button id="start-tracking" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold">
-                Start GPS Tracking
+
+        <div class="d-flex gap-3 flex-wrap">
+            <button id="start-tracking" class="btn-agent btn-agent-green">
+                <i class="bi bi-broadcast"></i> Start GPS Tracking
             </button>
-            <button id="stop-tracking" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold hidden">
-                Stop GPS Tracking
+            <button id="stop-tracking" class="btn-agent btn-agent-red" style="display:none;">
+                <i class="bi bi-stop-circle"></i> Stop GPS Tracking
             </button>
         </div>
-        
-        <div id="location-info" class="mt-4 text-sm text-gray-600 hidden">
-            <p>Last updated: <span id="last-update">Never</span></p>
-            <p>Coordinates: <span id="coordinates">-</span></p>
+
+        <div id="location-info" class="mt-3" style="display:none;">
+            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">Last updated: <span id="last-update" style="color:var(--color-success);">Never</span></p>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">Coordinates: <span id="coordinates" style="color:rgba(255,255,255,0.7);">-</span></p>
         </div>
     </div>
     @endif
 
-    <!-- Update Status Form -->
     @if($parcel->status !== 'delivered')
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h3 class="text-xl font-bold mb-4">Update Delivery Status</h3>
-        
+    <div class="detail-card mt-3 fade-in" style="animation-delay:0.15s">
+        <h3 class="card-heading mb-3">Update Delivery Status</h3>
+
         <form action="{{ route('agent.delivery.update', $parcel->id) }}" method="POST">
             @csrf
-            
-            <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">Status</label>
-                <select name="status" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+
+            <div class="mb-3">
+                <label class="form-label-dark">Status</label>
+                <select name="status" class="form-control form-control-dark" required>
                     <option value="pending" {{ $parcel->status == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="in_transit" {{ $parcel->status == 'in_transit' ? 'selected' : '' }}>In Transit</option>
                     <option value="out_for_delivery" {{ $parcel->status == 'out_for_delivery' ? 'selected' : '' }}>Out for Delivery</option>
@@ -102,151 +94,209 @@
                     <option value="failed" {{ $parcel->status == 'failed' ? 'selected' : '' }}>Failed</option>
                 </select>
             </div>
-            
-            <div class="mb-4">
-                <label class="block text-gray-700 font-semibold mb-2">Notes (Optional)</label>
-                <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Add any remarks..."></textarea>
+
+            <div class="mb-3">
+                <label class="form-label-dark">Notes (Optional)</label>
+                <textarea name="notes" rows="3" class="form-control form-control-dark" placeholder="Add any remarks..."></textarea>
             </div>
-            
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
-                Update Status
+
+            <button type="submit" class="btn-agent btn-agent-blue">
+                <i class="bi bi-check2-circle"></i> Update Status
             </button>
         </form>
     </div>
     @endif
-    @if($parcel->status == 'out_for_delivery' && !$parcel->signature_data)
-<div class="mt-4">
-    <a href="{{ route('agent.proof.create', $parcel->id) }}" 
-       class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg text-center">
-        📸 Submit Proof of Delivery
-    </a>
-</div>
-@endif
 
-    <!-- Timeline -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-bold mb-4">Delivery Timeline</h3>
-        
+    @if($parcel->status == 'out_for_delivery' && !$parcel->signature_data)
+    <div class="mt-3 fade-in" style="animation-delay:0.2s">
+        <a href="{{ route('agent.proof.create', $parcel->id) }}" class="btn-agent btn-agent-purple w-100 text-center d-block py-3">
+            <i class="bi bi-camera"></i> Submit Proof of Delivery
+        </a>
+    </div>
+    @endif
+
+    <div class="detail-card mt-3 fade-in" style="animation-delay:0.25s">
+        <h3 class="card-heading mb-4">Delivery Timeline</h3>
+
         @if($parcel->timelines && $parcel->timelines->count() > 0)
-            <div class="space-y-4">
+            <div class="timeline">
                 @foreach($parcel->timelines as $timeline)
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 w-3 h-3 bg-blue-600 rounded-full mt-1.5"></div>
-                    <div class="ml-4 flex-1">
-                        <p class="font-semibold text-gray-800">{{ ucfirst(str_replace('_', ' ', $timeline->status)) }}</p>
+                <div class="timeline-item {{ $loop->first ? 'timeline-active' : '' }}">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-body">
+                        <p class="timeline-status">{{ ucfirst(str_replace('_', ' ', $timeline->status)) }}</p>
                         @if($timeline->notes)
-                        <p class="text-gray-600 text-sm">{{ $timeline->notes }}</p>
+                        <p class="timeline-note">{{ $timeline->notes }}</p>
                         @endif
-                        <p class="text-gray-400 text-xs">{{ $timeline->created_at->format('M d, Y h:i A') }}</p>
+                        <p class="timeline-time">{{ $timeline->created_at->format('M d, Y h:i A') }}</p>
                     </div>
                 </div>
                 @endforeach
             </div>
         @else
-            <p class="text-gray-500">No timeline entries yet</p>
+            <p style="color:rgba(255,255,255,0.35);">No timeline entries yet</p>
         @endif
     </div>
 </div>
 
+<style>
+.back-link { color:var(--color-primary);text-decoration:none;font-size:0.85rem;font-weight:600;transition:color 0.2s; }
+.back-link:hover { color:var(--color-primary-soft); }
+
+.detail-card {
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+    border-radius:14px;padding:1.5rem;
+}
+.card-heading { font-size:1.1rem;font-weight:700;color:var(--color-white);margin:0; }
+
+.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.field-value { font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
+.field-sub { font-size:0.78rem;color:rgba(255,255,255,0.4);margin:2px 0 0; }
+
+.status-badge { padding:0.3rem 0.8rem;border-radius:100px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em; }
+.status-delivered { background:rgba(52,211,153,0.12);color:var(--color-success);border:1px solid rgba(52,211,153,0.25); }
+.status-pending { background:rgba(251,191,36,0.12);color:var(--color-warning);border:1px solid rgba(251,191,36,0.25); }
+.status-transit { background:rgba(14,165,233,0.12);color:var(--color-primary);border:1px solid rgba(14,165,233,0.25); }
+.status-failed { background:rgba(248,113,113,0.12);color:var(--color-danger);border:1px solid rgba(248,113,113,0.25); }
+
+.form-label-dark { color:rgba(255,255,255,0.6);font-size:0.82rem;font-weight:600;margin-bottom:0.35rem;display:block; }
+.form-control-dark {
+    background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.1) !important;
+    color:var(--color-white) !important;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.9rem;
+}
+.form-control-dark::placeholder { color:rgba(255,255,255,0.25) !important; }
+.form-control-dark:focus { border-color:var(--color-primary) !important;box-shadow:0 0 0 3px rgba(14,165,233,0.12) !important; }
+.form-control-dark option { background:var(--color-slate-850);color:var(--color-white); }
+
+.btn-agent {
+    border:none;border-radius:8px;padding:0.55rem 1.2rem;font-size:0.85rem;font-weight:600;
+    cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.2s;text-decoration:none;
+}
+.btn-agent-blue { background:var(--color-primary);color:var(--color-white); }
+.btn-agent-blue:hover { background:var(--color-primary-strong);color:var(--color-white); }
+.btn-agent-green { background:var(--color-success-strong);color:var(--color-white); }
+.btn-agent-green:hover { background:var(--color-success-deep);color:var(--color-white); }
+.btn-agent-red { background:rgba(239,68,68,0.15);color:var(--color-danger);border:1px solid rgba(239,68,68,0.25); }
+.btn-agent-red:hover { background:rgba(239,68,68,0.25);color:var(--color-danger-soft); }
+.btn-agent-purple { background:var(--color-violet-deep);color:var(--color-white); }
+.btn-agent-purple:hover { background:var(--color-violet-ink);color:var(--color-white); }
+
+.gps-alert {
+    border: 1px solid rgba(248,113,113,0.45);
+    background: rgba(127,29,29,0.4);
+    color: var(--color-alert-error-text);
+    border-radius: 10px;
+    padding: 0.7rem 0.85rem;
+    margin-bottom: 0.85rem;
+    font-size: 0.83rem;
+    font-weight: 600;
+}
+
+.timeline { position:relative;padding-left:1.5rem; }
+.timeline::before { content:'';position:absolute;left:5px;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.08); }
+.timeline-item { position:relative;margin-bottom:1.5rem; }
+.timeline-dot { position:absolute;left:-1.5rem;top:3px;width:12px;height:12px;border-radius:50%;background:var(--color-slate-900);border:2px solid rgba(255,255,255,0.15); }
+.timeline-active .timeline-dot { background:var(--color-primary);border-color:var(--color-primary);box-shadow:0 0 8px rgba(14,165,233,0.5); }
+.timeline-status { color:rgba(255,255,255,0.85);font-weight:600;font-size:0.88rem;margin:0 0 2px; }
+.timeline-note { color:rgba(255,255,255,0.45);font-size:0.82rem;margin:2px 0 0; }
+.timeline-time { color:rgba(255,255,255,0.25);font-size:0.75rem;margin:4px 0 0; }
+
+.fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
+@keyframes fadeIn { to { opacity:1;transform:translateY(0); } }
+</style>
+
 @push('scripts')
 <script>
-let watchId = null;
-let isTracking = false;
-const parcelId = {{ $parcel->id }};
-const updateUrl = "{{ route('agent.update.location') }}";
+document.addEventListener('DOMContentLoaded', () => {
+    let watchId = null;
+    const parcelId = {{ $parcel->id }};
+    const updateUrl = "{{ route('agent.update.location') }}";
 
-const startBtn = document.getElementById('start-tracking');
-const stopBtn = document.getElementById('stop-tracking');
-const statusDiv = document.getElementById('gps-status');
-const locationInfo = document.getElementById('location-info');
-const lastUpdate = document.getElementById('last-update');
-const coordinates = document.getElementById('coordinates');
+    const startBtn = document.getElementById('start-tracking');
+    const stopBtn = document.getElementById('stop-tracking');
+    const statusDiv = document.getElementById('gps-status');
+    const locationInfo = document.getElementById('location-info');
+    const lastUpdate = document.getElementById('last-update');
+    const coordinates = document.getElementById('coordinates');
+    const gpsAlert = document.getElementById('gps-alert');
 
-// Start GPS tracking
-startBtn.addEventListener('click', function() {
-    if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser');
-        return;
+    if (!startBtn || !stopBtn || !statusDiv || !locationInfo || !lastUpdate || !coordinates || !gpsAlert) return;
+
+    function showGpsAlert(message) {
+        gpsAlert.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + message;
+        gpsAlert.style.display = 'block';
     }
-    
-    statusDiv.innerHTML = '<p class="text-green-600 font-semibold">🟢 GPS Tracking Active</p>';
-    startBtn.classList.add('hidden');
-    stopBtn.classList.remove('hidden');
-    locationInfo.classList.remove('hidden');
-    isTracking = true;
-    
-    // Get location every 10 seconds
-    watchId = navigator.geolocation.watchPosition(
-        sendLocation,
-        handleError,
-        {
-            enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 10000
+
+    function hideGpsAlert() {
+        gpsAlert.innerHTML = '';
+        gpsAlert.style.display = 'none';
+    }
+
+    startBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            showGpsAlert('Geolocation is not supported by your browser.');
+            return;
         }
-    );
-});
 
-// Stop GPS tracking
-stopBtn.addEventListener('click', function() {
-    if (watchId !== null) {
-        navigator.geolocation.clearWatch(watchId);
-        watchId = null;
-    }
-    
-    isTracking = false;
-    statusDiv.innerHTML = '<p class="text-gray-600">GPS Tracking Stopped</p>';
-    startBtn.classList.remove('hidden');
-    stopBtn.classList.add('hidden');
-});
+        hideGpsAlert();
+        statusDiv.innerHTML = '<p style="color:var(--color-success);font-weight:600;"><i class="bi bi-check-circle-fill me-1"></i> GPS Tracking Active</p>';
+        startBtn.style.display = 'none';
+        stopBtn.style.display = 'inline-flex';
+        locationInfo.style.display = 'block';
 
-// Send location to server
-function sendLocation(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    
-    fetch(updateUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            parcel_id: parcelId,
-            lat: lat,
-            lng: lng
+        watchId = navigator.geolocation.watchPosition(
+            sendLocation,
+            handleError,
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+        );
+    });
+
+    stopBtn.addEventListener('click', () => {
+        hideGpsAlert();
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+            watchId = null;
+        }
+        statusDiv.innerHTML = '<p style="color:rgba(255,255,255,0.5);">GPS Tracking Stopped</p>';
+        startBtn.style.display = 'inline-flex';
+        stopBtn.style.display = 'none';
+    });
+
+    function sendLocation(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        fetch(updateUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ parcel_id: parcelId, lat, lng })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
+        .then((response) => response.json())
+        .then((data) => {
+            if (!data.success) return;
             lastUpdate.textContent = new Date().toLocaleTimeString();
             coordinates.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-        }
-    })
-    .catch(error => {
-        console.error('Error updating location:', error);
-    });
-}
-
-// Handle geolocation errors
-function handleError(error) {
-    let message = 'Error getting location: ';
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            message += 'Permission denied. Please enable location access.';
-            break;
-        case error.POSITION_UNAVAILABLE:
-            message += 'Location unavailable.';
-            break;
-        case error.TIMEOUT:
-            message += 'Request timed out.';
-            break;
+        })
+        .catch(() => showGpsAlert('Could not send location update. Check your network and try again.'));
     }
-    statusDiv.innerHTML = `<p class="text-red-600">${message}</p>`;
-    startBtn.classList.remove('hidden');
-    stopBtn.classList.add('hidden');
-}
+
+    function handleError(error) {
+        let message = 'Error getting location: ';
+        switch (error.code) {
+            case error.PERMISSION_DENIED: message += 'Permission denied.'; break;
+            case error.POSITION_UNAVAILABLE: message += 'Location unavailable.'; break;
+            case error.TIMEOUT: message += 'Request timed out.'; break;
+            default: message += 'Unknown error.'; break;
+        }
+        statusDiv.innerHTML = `<p style="color:var(--color-danger);">${message}</p>`;
+        showGpsAlert(message);
+        startBtn.style.display = 'inline-flex';
+        stopBtn.style.display = 'none';
+    }
+});
 </script>
 @endpush
 @endsection

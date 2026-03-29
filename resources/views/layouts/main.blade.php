@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>SwiftShip</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/swiftship-logo.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('images/swiftship-logo.svg') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    @include('partials.theme')
     @stack('styles')
 </head>
 <body>

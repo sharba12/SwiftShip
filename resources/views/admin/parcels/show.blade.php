@@ -2,17 +2,16 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <!-- Back Button -->
+    <div id="admin-parcel-notice" class="hidden mb-4 px-4 py-3 rounded-lg text-sm font-semibold"></div>
+
     <div class="mb-4">
         <a href="{{ route('admin.parcels.index') }}" class="text-blue-600 hover:text-blue-800">
-            ← Back to Parcels
+            Back to Parcels
         </a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Main Details -->
         <div class="lg:col-span-2">
-            <!-- Parcel Info Card -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <div class="flex justify-between items-start mb-6">
                     <div>
@@ -30,7 +29,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Sender -->
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-3">Sender Information</h3>
                         <div class="space-y-2">
@@ -45,7 +43,6 @@
                         </div>
                     </div>
 
-                    <!-- Receiver -->
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-3">Receiver Information</h3>
                         <div class="space-y-2">
@@ -65,7 +62,6 @@
                     </div>
                 </div>
 
-                <!-- Additional Info -->
                 <div class="mt-6 pt-6 border-t border-gray-200">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
@@ -95,11 +91,10 @@
                 @endif
             </div>
 
-            <!-- Proof of Delivery -->
             @if($parcel->signature_data || $parcel->delivery_photo)
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Proof of Delivery</h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @if($parcel->signature_data)
                     <div>
@@ -129,10 +124,9 @@
             </div>
             @endif
 
-            <!-- Timeline -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Delivery Timeline</h3>
-                
+
                 @if($parcel->timelines && $parcel->timelines->count() > 0)
                     <div class="space-y-4">
                         @foreach($parcel->timelines as $timeline)
@@ -153,41 +147,35 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
         <div class="lg:col-span-1">
-            <!-- QR Code Card -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">QR Code</h3>
-                
+
                 <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                    <img src="{{ route('admin.parcel.qr', $parcel->tracking_id) }}" 
-                         alt="QR Code" 
-                         class="w-full max-w-xs mx-auto">
+                    <img src="{{ route('admin.parcel.qr', $parcel->tracking_id) }}" alt="QR Code" class="w-full max-w-xs mx-auto">
                 </div>
 
                 <div class="space-y-2">
                     <button onclick="printQR()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
-                        🖨️ Print QR Code
+                        Print QR Code
                     </button>
-                    <a href="{{ route('admin.parcel.qr.label', $parcel->tracking_id) }}" 
-                       class="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
-                        📄 Download Label (PDF)
+                    <a href="{{ route('admin.parcel.qr.label', $parcel->tracking_id) }}" class="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
+                        Download Label (PDF)
                     </a>
                     <button onclick="copyTrackingId()" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg">
-                        📋 Copy Tracking ID
+                        Copy Tracking ID
                     </button>
                 </div>
             </div>
 
-            <!-- Rating Card -->
             @if($parcel->rating)
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Customer Rating</h3>
-                
+
                 <div class="text-center mb-4">
                     <div class="text-4xl mb-2">
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="{{ $i <= $parcel->rating->rating ? 'text-yellow-400' : 'text-gray-300' }}">⭐</span>
+                            <span class="{{ $i <= $parcel->rating->rating ? 'text-yellow-400' : 'text-gray-300' }}">*</span>
                         @endfor
                     </div>
                     <p class="text-2xl font-bold text-gray-800">{{ $parcel->rating->rating }}/5</p>
@@ -206,27 +194,23 @@
             </div>
             @endif
 
-            <!-- Quick Actions -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
-                
+
                 <div class="space-y-2">
-                    <a href="{{ route('track.page') }}?tracking={{ $parcel->tracking_id }}" 
-                       target="_blank"
-                       class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
-                        🔍 View Public Tracking
+                    <a href="{{ route('track.page') }}?tracking={{ $parcel->tracking_id }}" target="_blank" class="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
+                        View Public Tracking
                     </a>
-                    
+
                     @if($parcel->status !== 'delivered')
-                    <a href="{{ route('admin.parcels.edit', $parcel->id) }}" 
-                       class="block w-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
-                        ✏️ Edit Parcel
+                    <a href="{{ route('admin.parcels.edit', $parcel->id) }}" class="block w-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg text-center">
+                        Edit Parcel
                     </a>
                     @endif
 
                     @if($parcel->customer && $parcel->customer->email)
                     <button onclick="sendNotification()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg">
-                        📧 Send Notification
+                        Send Notification
                     </button>
                     @endif
                 </div>
@@ -237,10 +221,24 @@
 
 @push('scripts')
 <script>
+function setAdminNotice(message, type = 'info') {
+    const notice = document.getElementById('admin-parcel-notice');
+    if (!notice) return;
+
+    const typeClassMap = {
+        success: 'bg-green-100 text-green-800',
+        error: 'bg-red-100 text-red-800',
+        info: 'bg-blue-100 text-blue-800'
+    };
+
+    notice.className = `mb-4 px-4 py-3 rounded-lg text-sm font-semibold ${typeClassMap[type] || typeClassMap.info}`;
+    notice.textContent = message;
+}
+
 function printQR() {
     const qrImage = '{{ route("admin.parcel.qr", $parcel->tracking_id) }}';
     const trackingId = '{{ $parcel->tracking_id }}';
-    
+
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <html>
@@ -279,17 +277,16 @@ function printQR() {
 
 function copyTrackingId() {
     const trackingId = '{{ $parcel->tracking_id }}';
-    navigator.clipboard.writeText(trackingId).then(function() {
-        alert('Tracking ID copied to clipboard!');
-    }, function() {
-        alert('Failed to copy tracking ID');
+    navigator.clipboard.writeText(trackingId).then(() => {
+        setAdminNotice('Tracking ID copied to clipboard.', 'success');
+    }, () => {
+        setAdminNotice('Failed to copy tracking ID.', 'error');
     });
 }
 
 function sendNotification() {
     if (confirm('Send status notification to customer?')) {
-        // Add your notification sending logic here
-        alert('Notification sent! (Implement this feature)');
+        setAdminNotice('Notification trigger queued. Implement backend dispatch to send actual email/SMS.', 'info');
     }
 }
 </script>
