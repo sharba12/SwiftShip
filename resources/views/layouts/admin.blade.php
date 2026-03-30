@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}"/>
     @include('partials.theme')
     <script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
+    <style>
+    @font-face {
+        font-display: block;
+        font-family: "bootstrap-icons";
+        src: url("{{ asset('vendor/bootstrap-icons/fonts/bootstrap-icons.woff2') }}") format("woff2"),
+             url("{{ asset('vendor/bootstrap-icons/fonts/bootstrap-icons.woff') }}") format("woff");
+    }
+    </style>
 
     <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -327,7 +335,21 @@
 
 <aside class="sidebar">
     <a class="sidebar-brand" href="{{ route('home') }}">
-        <img src="{{ asset('images/swiftship-logo.svg') }}" alt="SwiftShip logo" class="sidebar-logo">
+        <svg class="sidebar-logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect width="64" height="64" rx="14" fill="#0f172a"></rect>
+            <path d="M8 32L26 14L56 32L26 50L8 32Z" fill="url(#sidebarLogoBlue)"></path>
+            <path d="M18 32L33 22L49 32L33 42L18 32Z" fill="url(#sidebarLogoAmber)"></path>
+            <defs>
+                <linearGradient id="sidebarLogoBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8"></stop>
+                    <stop offset="100%" stop-color="#0284c7"></stop>
+                </linearGradient>
+                <linearGradient id="sidebarLogoAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fbbf24"></stop>
+                    <stop offset="100%" stop-color="#f59e0b"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
         <span class="sidebar-brand-text">Swift<span>Ship</span></span>
     </a>
 
@@ -384,7 +406,21 @@
 <div class="content-wrapper">
     <div class="topbar">
         <div class="topbar-left">
-            <img src="{{ asset('images/swiftship-logo.svg') }}" alt="SwiftShip logo" class="topbar-logo">
+            <svg class="topbar-logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <rect width="64" height="64" rx="14" fill="#0f172a"></rect>
+                <path d="M8 32L26 14L56 32L26 50L8 32Z" fill="url(#topbarLogoBlue)"></path>
+                <path d="M18 32L33 22L49 32L33 42L18 32Z" fill="url(#topbarLogoAmber)"></path>
+                <defs>
+                    <linearGradient id="topbarLogoBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#38bdf8"></stop>
+                        <stop offset="100%" stop-color="#0284c7"></stop>
+                    </linearGradient>
+                    <linearGradient id="topbarLogoAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fbbf24"></stop>
+                        <stop offset="100%" stop-color="#f59e0b"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>
             <span class="topbar-breadcrumb">
                 SwiftShip &rsaquo; <span>Admin</span>
             </span>

@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap-icons/css/bootstrap-icons.min.css') }}">
     <script src="{{ asset('vendor/tailwind/tailwindcss-cdn.js') }}"></script>
+    <style>
+    @font-face {
+        font-display: block;
+        font-family: "bootstrap-icons";
+        src: url("{{ asset('vendor/bootstrap-icons/fonts/bootstrap-icons.woff2') }}") format("woff2"),
+             url("{{ asset('vendor/bootstrap-icons/fonts/bootstrap-icons.woff') }}") format("woff");
+    }
+    </style>
     @include('partials.theme')
 
     <style>
