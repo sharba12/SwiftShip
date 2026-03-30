@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/swiftship-logo.svg') }}">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     @include('partials.theme')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,6 +21,6 @@
     </main>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

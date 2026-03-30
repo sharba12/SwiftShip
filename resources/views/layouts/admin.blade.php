@@ -9,10 +9,10 @@
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/fontawesome/css/all.min.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-icons/css/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}"/>
     @include('partials.theme')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
 
     <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

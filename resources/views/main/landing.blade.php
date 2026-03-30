@@ -239,7 +239,7 @@
 </style>
 
 <!-- ================= THREE.JS 3D HERO ================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="{{ asset('vendor/three/three.min.js') }}"></script>
 <script>
 (function () {
     const canvas = document.getElementById('hero-canvas');

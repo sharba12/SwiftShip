@@ -137,11 +137,12 @@
 {{-- ═══════════════════ MAP ═══════════════════ --}}
 <section class="section-deeper pb-5">
     <div class="container">
-        <div class="map-wrap fade-up">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241319.91732115654!2d72.74110166292875!3d19.082197839949224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c630586a1fb9%3A0x8f1f4277afd1d48a!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1706012345678"
-                width="100%" height="380" style="border:0;" allowfullscreen="" loading="lazy">
-            </iframe>
+        <div class="map-wrap fade-up d-flex align-items-center justify-content-center text-center p-4">
+            <div>
+                <h5 class="text-white mb-2">Office Location</h5>
+                <p class="text-muted-light mb-1">Mumbai, Maharashtra, India</p>
+                <p class="text-muted-light mb-0">Map embed disabled for offline mode.</p>
+            </div>
         </div>
     </div>
 </section>

@@ -195,7 +195,7 @@
 </section>
 
 @push('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}" />
 @endpush
 
 <style>
@@ -300,16 +300,14 @@
 
 @if($parcel && in_array($parcel->status, ['in_transit', 'out_for_delivery']))
 @push('scripts')
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const initialLat = {{ $parcel->current_lat ?? 10.0261 }};
     const initialLng = {{ $parcel->current_lng ?? 76.3125 }};
 
     const map = L.map('map', { zoomControl: true }).setView([initialLat, initialLng], 13);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
-    }).addTo(map);
+    document.getElementById('map').style.background = '#0f172a';
 
     const icon = L.divIcon({
         html: '<div style="width:14px;height:14px;background:var(--color-primary);border:3px solid var(--color-white);border-radius:50%;box-shadow:0 0 12px rgba(14,165,233,0.8);"></div>',

@@ -315,7 +315,7 @@
 </style>
 
 {{-- 3D PARTICLE BACKGROUND --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="{{ asset('vendor/three/three.min.js') }}"></script>
 <script>
 (function(){
     const canvas = document.getElementById('track-canvas');
@@ -373,14 +373,12 @@
 </script>
 
 @if(isset($parcel) && isset($parcel->id))
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}"/>
+<script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const map = L.map('parcel-map', { zoomControl: true }).setView([20.5937, 78.9629], 5);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap © CARTO', maxZoom: 18
-    }).addTo(map);
+    document.getElementById('parcel-map').style.background = '#0f172a';
 
     fetch('{{ route("parcel.location", $parcel->id) }}')
         .then(r=>r.json())
@@ -400,3 +398,4 @@ document.addEventListener('DOMContentLoaded', function(){
 @endif
 
 @endsection
+

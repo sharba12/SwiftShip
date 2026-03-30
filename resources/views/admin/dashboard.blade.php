@@ -215,9 +215,7 @@
 let map = L.map('agentMap').setView([20.5937,78.9629],5);
 let markers = {};
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
-}).addTo(map);
+document.getElementById('agentMap').style.background = '#0f172a';
 
 const agentIcon = L.divIcon({
     html:`<div style="width:14px;height:14px;background:var(--color-primary);border:3px solid var(--color-white);border-radius:50%;box-shadow:0 0 10px rgba(14,165,233,0.8);"></div>`,

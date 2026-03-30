@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/swiftship-logo.svg') }}">
     <link rel="shortcut icon" href="{{ asset('images/swiftship-logo.svg') }}">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     @include('partials.theme')
     @stack('styles')
 </head>
@@ -21,7 +21,7 @@
 
 @include('partials.footer')
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 @stack('scripts')
 </body>
 </html>

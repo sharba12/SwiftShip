@@ -271,7 +271,7 @@
 @keyframes fadeUp { to { opacity:1;transform:translateY(0); } }
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="{{ asset('vendor/three/three.min.js') }}"></script>
 <script>
 function togglePassword(id) {
     const input = document.getElementById(id);
