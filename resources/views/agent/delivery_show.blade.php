@@ -73,6 +73,7 @@
         <div id="location-info" class="mt-3" style="display:none;">
             <p style="color:rgba(255,255,255,0.72);font-size:0.82rem;">Last updated: <span id="last-update" style="color:var(--color-success);">Never</span></p>
             <p style="color:rgba(255,255,255,0.72);font-size:0.82rem;">Coordinates: <span id="coordinates" style="color:rgba(255,255,255,0.7);">-</span></p>
+            <p style="color:rgba(255,255,255,0.72);font-size:0.82rem;">Accuracy: <span id="accuracy" style="color:rgba(255,255,255,0.7);">-</span></p>
         </div>
     </div>
     @endif
@@ -209,6 +210,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     let watchId = null;
+    let usingFallbackMode = false;
     const parcelId = {{ $parcel->id }};
     const updateUrl = "{{ route('agent.update.location') }}";
 
@@ -218,9 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const locationInfo = document.getElementById('location-info');
     const lastUpdate = document.getElementById('last-update');
     const coordinates = document.getElementById('coordinates');
+    const accuracySpan = document.getElementById('accuracy');
     const gpsAlert = document.getElementById('gps-alert');
 
-    if (!startBtn || !stopBtn || !statusDiv || !locationInfo || !lastUpdate || !coordinates || !gpsAlert) return;
+    if (!startBtn || !stopBtn || !statusDiv || !locationInfo || !lastUpdate || !coordinates || !accuracySpan || !gpsAlert) return;
 
     function showGpsAlert(message) {
         gpsAlert.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + message;
@@ -230,6 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideGpsAlert() {
         gpsAlert.innerHTML = '';
         gpsAlert.style.display = 'none';
+    }
+
+    function startWatch(options) {
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+            watchId = null;
+        }
+        watchId = navigator.geolocation.watchPosition(sendLocation, handleError, options);
     }
 
     startBtn.addEventListener('click', () => {
@@ -243,12 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
         startBtn.style.display = 'none';
         stopBtn.style.display = 'inline-flex';
         locationInfo.style.display = 'block';
+        usingFallbackMode = false;
 
-        watchId = navigator.geolocation.watchPosition(
-            sendLocation,
-            handleError,
-            { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
-        );
+        startWatch({ enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
     });
 
     stopBtn.addEventListener('click', () => {
@@ -265,6 +273,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendLocation(position) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
+        const accuracy = position.coords.accuracy ?? 99999;
+        const fixAgeMs = Date.now() - position.timestamp;
+
+        // Ignore stale or very low-accuracy fixes to keep map location near real-time.
+        if (fixAgeMs > 15000) {
+            showGpsAlert('Received stale location. Waiting for a fresh GPS fix...');
+            return;
+        }
+        if (accuracy > 150) {
+            showGpsAlert(`GPS accuracy is low (${Math.round(accuracy)}m). Move to open sky / enable precise location.`);
+            accuracySpan.textContent = `Low (${Math.round(accuracy)}m)`;
+            return;
+        }
+
+        hideGpsAlert();
 
         fetch(updateUrl, {
             method: 'POST',
@@ -279,16 +302,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!data.success) return;
             lastUpdate.textContent = new Date().toLocaleTimeString();
             coordinates.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            accuracySpan.textContent = `±${Math.round(accuracy)} m`;
         })
         .catch(() => showGpsAlert('Could not send location update. Check your network and try again.'));
     }
 
     function handleError(error) {
+        if (error.code === error.TIMEOUT && !usingFallbackMode) {
+            usingFallbackMode = true;
+            showGpsAlert('GPS signal is slow. Retrying with balanced accuracy...');
+            startWatch({ enableHighAccuracy: false, maximumAge: 0, timeout: 20000 });
+            return;
+        }
+
         let message = 'Error getting location: ';
         switch (error.code) {
-            case error.PERMISSION_DENIED: message += 'Permission denied.'; break;
-            case error.POSITION_UNAVAILABLE: message += 'Location unavailable.'; break;
-            case error.TIMEOUT: message += 'Request timed out.'; break;
+            case error.PERMISSION_DENIED: message += 'Permission denied. Allow Location access in browser settings.'; break;
+            case error.POSITION_UNAVAILABLE: message += 'Location unavailable. Turn on device GPS and try near open sky.'; break;
+            case error.TIMEOUT: message += 'Request timed out. Please try again in a better signal area.'; break;
             default: message += 'Unknown error.'; break;
         }
         statusDiv.innerHTML = `<p style="color:var(--color-danger);">${message}</p>`;
