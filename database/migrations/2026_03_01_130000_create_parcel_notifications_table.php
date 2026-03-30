@@ -10,24 +10,30 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('parcel_notifications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('parcel_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['email', 'sms']); // notification type
-            $table->enum('status', ['sent', 'failed']); // delivery status
-            $table->string('recipient'); // email or phone number
-            $table->text('message'); // notification content
-            $table->text('error_message')->nullable(); // error if failed
-            $table->timestamps();
-        });
+{
+    if (Schema::hasTable('parcel_notifications')) {
+        return;
     }
+
+    Schema::create('parcel_notifications', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('parcel_id')->constrained()->onDelete('cascade');
+        $table->enum('type', ['email', 'sms']);
+        $table->enum('status', ['sent', 'failed']);
+        $table->string('recipient');
+        $table->text('message');
+        $table->text('error_message')->nullable();
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('parcel_notifications');
-    }
+public function down(): void
+{
+    Schema::dropIfExists('parcel_notifications');
+}
+
 };
