@@ -43,6 +43,11 @@ class AgentDeliveryController extends Controller
 
 public function updateStatus(Request $request, $id)
 {
+    $request->validate([
+        'status' => 'required|in:pending,in_transit,out_for_delivery,delivered,failed',
+        'notes' => 'nullable|string|max:1000',
+    ]);
+
     // Fetch the parcel first
     $parcel = Parcel::findOrFail($id);
     
@@ -60,8 +65,8 @@ public function updateStatus(Request $request, $id)
     $notificationService->notifyStatusChange($parcel, $oldStatus, $request->status);
     
     // If delivered, send confirmation with rating link
-    if ($request->status === 'delivered') {
-        // Add your delivery confirmation logic here
+    if ($request->status === 'delivered' && $oldStatus !== 'delivered') {
+        $notificationService->sendDeliveryConfirmation($parcel);
     }
     
     return redirect()->back()->with('success', 'Delivery status updated successfully');

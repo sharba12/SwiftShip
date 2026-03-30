@@ -26,7 +26,7 @@ class TrackingController extends Controller
             'tracking_number' => 'required|string',
         ]);
 
-        $parcel = Parcel::with('timelines')
+        $parcel = Parcel::with(['timelines', 'rating'])
             ->where('tracking_id', trim($request->tracking_number))
             ->first();
 
@@ -57,7 +57,7 @@ class TrackingController extends Controller
      */
     public function show($tracking_id)
     {
-        $parcel = Parcel::with('timelines')
+        $parcel = Parcel::with(['timelines', 'rating'])
             ->where('tracking_id', $tracking_id)
             ->firstOrFail();
         

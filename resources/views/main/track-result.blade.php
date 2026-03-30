@@ -165,6 +165,18 @@
                 </div>
                 @endif
 
+                @if($parcel->status === 'delivered')
+                <div class="text-center mt-4 fade-up" style="animation-delay:0.38s">
+                    @if(!$parcel->rating)
+                        <a href="{{ route('rating.create', $parcel->tracking_id) }}" class="btn btn-sky btn-lg px-5 rounded-pill">
+                            Rate This Delivery
+                        </a>
+                    @else
+                        <span class="live-badge">Thanks, this parcel is already rated.</span>
+                    @endif
+                </div>
+                @endif
+
                 {{-- BACK BUTTON --}}
                 <div class="text-center mt-4 fade-up" style="animation-delay:0.4s">
                     <a href="{{ route('track.page') }}" class="btn btn-outline-light btn-lg px-5 rounded-pill">
