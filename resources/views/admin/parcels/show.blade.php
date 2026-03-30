@@ -3,6 +3,16 @@
 @section('content')
 <div class="container mx-auto px-4 py-6">
     <div id="admin-parcel-notice" class="hidden mb-4 px-4 py-3 rounded-lg text-sm font-semibold"></div>
+    @if(session('success'))
+        <div class="mb-4 px-4 py-3 rounded-lg text-sm font-semibold bg-green-100 text-green-800">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="mb-4 px-4 py-3 rounded-lg text-sm font-semibold bg-red-100 text-red-800">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div class="mb-4">
         <a href="{{ route('admin.parcels.index') }}" class="text-blue-600 hover:text-blue-800">
@@ -209,9 +219,12 @@
                     @endif
 
                     @if($parcel->customer && $parcel->customer->email)
-                    <button onclick="sendNotification()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg">
-                        Send Notification
-                    </button>
+                    <form method="POST" action="{{ route('admin.parcels.notify', $parcel->id) }}" onsubmit="return confirm('Send status notification to customer now?');">
+                        @csrf
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg">
+                            Send Notification
+                        </button>
+                    </form>
                     @endif
                 </div>
             </div>
@@ -284,11 +297,6 @@ function copyTrackingId() {
     });
 }
 
-function sendNotification() {
-    if (confirm('Send status notification to customer?')) {
-        setAdminNotice('Notification trigger queued. Implement backend dispatch to send actual email/SMS.', 'info');
-    }
-}
 </script>
 @endpush
 @endsection

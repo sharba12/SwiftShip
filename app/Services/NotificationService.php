@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationService
 {
+    protected function resolveEmailRecipient($customer): array
+    {
+        $forcedAddress = config('mail.to.address');
+        $forcedName = config('mail.to.name');
+
+        if ($forcedAddress) {
+            return [$forcedAddress, $forcedName ?: 'Default Recipient'];
+        }
+
+        return [$customer->email, $customer->name];
+    }
+
     /**
      * Send notification when parcel status changes
      */
@@ -34,17 +46,19 @@ class NotificationService
     /**
      * Send email notification
      */
-    protected function sendEmailNotification(Parcel $parcel, string $status)
+    protected function sendEmailNotification(Parcel $parcel, string $status): bool
     {
         try {
             $customer = $parcel->customer;
             
+            [$recipientEmail, $recipientName] = $this->resolveEmailRecipient($customer);
+
             Mail::send('emails.parcel-status-update', [
                 'parcel' => $parcel,
                 'status' => $status,
                 'customer' => $customer
-            ], function ($message) use ($customer, $parcel, $status) {
-                $message->to($customer->email, $customer->name)
+            ], function ($message) use ($recipientEmail, $recipientName, $parcel, $status) {
+                $message->to($recipientEmail, $recipientName)
                     ->subject('Parcel Update: ' . ucfirst(str_replace('_', ' ', $status)));
             });
 
@@ -53,11 +67,12 @@ class NotificationService
                 'parcel_id' => $parcel->id,
                 'type' => 'email',
                 'status' => 'sent',
-                'recipient' => $customer->email,
+                'recipient' => $recipientEmail,
                 'message' => "Status updated to: " . $status,
             ]);
 
-            Log::info("Email sent to {$customer->email} for parcel {$parcel->tracking_id}");
+            Log::info("Email sent to {$recipientEmail} for parcel {$parcel->tracking_id}");
+            return true;
             
         } catch (\Exception $e) {
             ParcelNotification::create([
@@ -70,7 +85,22 @@ class NotificationService
             ]);
 
             Log::error("Email failed for parcel {$parcel->tracking_id}: " . $e->getMessage());
+            return false;
         }
+    }
+
+    /**
+     * Send status email immediately (ignores customer email preference flag)
+     */
+    public function sendStatusEmail(Parcel $parcel): bool
+    {
+        $customer = $parcel->customer;
+
+        if (!$customer || !$customer->email) {
+            return false;
+        }
+
+        return $this->sendEmailNotification($parcel, $parcel->status);
     }
 
     /**
@@ -144,16 +174,18 @@ class NotificationService
         }
 
         try {
+            [$recipientEmail, $recipientName] = $this->resolveEmailRecipient($customer);
+
             Mail::send('emails.delivery-confirmation', [
                 'parcel' => $parcel,
                 'customer' => $customer,
                 'ratingUrl' => route('rating.create', $parcel->tracking_id),
-            ], function ($message) use ($customer, $parcel) {
-                $message->to($customer->email, $customer->name)
+            ], function ($message) use ($recipientEmail, $recipientName, $parcel) {
+                $message->to($recipientEmail, $recipientName)
                     ->subject('Delivered: ' . $parcel->tracking_id . ' - Rate Your Experience');
             });
 
-            Log::info("Delivery confirmation sent to {$customer->email}");
+            Log::info("Delivery confirmation sent to {$recipientEmail}");
             
         } catch (\Exception $e) {
             Log::error("Delivery confirmation failed: " . $e->getMessage());

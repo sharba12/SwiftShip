@@ -104,6 +104,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('parcels/{id}/edit', [AdminParcelController::class, 'edit'])->name('parcels.edit');
         Route::put('parcels/{id}', [AdminParcelController::class, 'update'])->name('parcels.update');
         Route::delete('parcels/{id}', [AdminParcelController::class, 'destroy'])->name('parcels.destroy');
+        Route::post('parcels/{id}/notify', [AdminParcelController::class, 'notify'])->name('parcels.notify');
         
         // QR Code routes
         Route::get('parcel/{trackingId}/qr', [\App\Http\Controllers\Agent\QrCodeController::class, 'generate'])

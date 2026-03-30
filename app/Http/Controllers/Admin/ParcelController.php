@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Parcel;
 use App\Models\Customer;
 use App\Models\User;
+use App\Services\NotificationService;
 
 class ParcelController extends Controller
 {
@@ -154,5 +155,28 @@ class ParcelController extends Controller
 
         return redirect()->route('admin.parcels.index')
             ->with('success', 'Parcel deleted successfully.');
+    }
+
+    /**
+     * Trigger customer notification email manually from admin panel
+     */
+    public function notify($id, NotificationService $notificationService)
+    {
+        $parcel = Parcel::with('customer')->findOrFail($id);
+
+        if (!$parcel->customer || !$parcel->customer->email) {
+            return redirect()->route('admin.parcels.show', $parcel->id)
+                ->with('error', 'Customer email is not available for this parcel.');
+        }
+
+        $sent = $notificationService->sendStatusEmail($parcel);
+
+        if (!$sent) {
+            return redirect()->route('admin.parcels.show', $parcel->id)
+                ->with('error', 'Failed to send notification email. Please check mail settings/logs.');
+        }
+
+        return redirect()->route('admin.parcels.show', $parcel->id)
+            ->with('success', 'Notification email sent successfully.');
     }
 }

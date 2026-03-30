@@ -39,7 +39,12 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME'),
+            // Normalize legacy MAIL_ENCRYPTION values (tls/ssl) to Symfony-supported schemes.
+            'scheme' => match (strtolower((string) env('MAIL_SCHEME', env('MAIL_ENCRYPTION', '')))) {
+                'tls', 'starttls', 'smtp' => 'smtp',
+                'ssl', 'smtps' => 'smtps',
+                default => null,
+            },
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
@@ -113,6 +118,20 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Global "To" Address
+    |--------------------------------------------------------------------------
+    |
+    | If configured, all application emails can be routed to this address.
+    | Useful for staging/testing or when a fixed recipient is required.
+    |
+    */
+    'to' => [
+        'address' => env('MAIL_TO_ADDRESS'),
+        'name' => env('MAIL_TO_NAME'),
     ],
 
 ];
