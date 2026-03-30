@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Parcel;
+use App\Services\NotificationService;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QrCodeController extends Controller
@@ -55,7 +56,7 @@ class QrCodeController extends Controller
     /**
      * Quick status update via QR scan
      */
-    public function quickUpdate(Request $request)
+    public function quickUpdate(Request $request, NotificationService $notificationService)
     {
         $request->validate([
             'tracking_id' => 'required|string',
@@ -80,6 +81,7 @@ class QrCodeController extends Controller
         ];
 
         $newStatus = $statusMap[$request->action];
+        $oldStatus = $parcel->status;
 
         $parcel->update([
             'status' => $newStatus,
@@ -90,6 +92,11 @@ class QrCodeController extends Controller
             'status' => $newStatus,
             'notes' => 'Updated via QR scan'
         ]);
+
+        $notificationService->notifyStatusChange($parcel, $oldStatus, $newStatus);
+        if ($newStatus === 'delivered' && $oldStatus !== 'delivered') {
+            $notificationService->sendDeliveryConfirmation($parcel);
+        }
 
         return response()->json([
             'success' => true,

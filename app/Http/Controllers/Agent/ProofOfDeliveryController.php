@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Parcel;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -25,10 +26,11 @@ class ProofOfDeliveryController extends Controller
     /**
      * Store proof of delivery
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, $id, NotificationService $notificationService)
     {
         $parcel = Parcel::where('agent_id', auth()->id())
             ->findOrFail($id);
+        $oldStatus = $parcel->status;
 
         // Validate - make photo optional since we have photo_data
         $request->validate([
@@ -85,6 +87,11 @@ class ProofOfDeliveryController extends Controller
                 'changed_by' => auth()->id(),
                 'notes' => 'Proof of delivery submitted',
             ]);
+        }
+
+        $notificationService->notifyStatusChange($parcel, $oldStatus, 'delivered');
+        if ($oldStatus !== 'delivered') {
+            $notificationService->sendDeliveryConfirmation($parcel);
         }
 
         return redirect()

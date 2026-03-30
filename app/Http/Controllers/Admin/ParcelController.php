@@ -113,9 +113,10 @@ class ParcelController extends Controller
     /**
      * Update parcel
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, NotificationService $notificationService)
     {
         $parcel = Parcel::findOrFail($id);
+        $oldStatus = $parcel->status;
 
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
@@ -140,6 +141,15 @@ class ParcelController extends Controller
             'address_to',
             'status',
         ]));
+
+        $newStatus = $parcel->status;
+        if ($oldStatus !== $newStatus) {
+            $notificationService->notifyStatusChange($parcel, $oldStatus, $newStatus);
+
+            if ($newStatus === 'delivered' && $oldStatus !== 'delivered') {
+                $notificationService->sendDeliveryConfirmation($parcel);
+            }
+        }
 
         return redirect()->route('admin.parcels.show', $parcel->id)
             ->with('success', 'Parcel updated successfully.');
