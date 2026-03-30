@@ -102,7 +102,7 @@
 .dash-wrap { max-width: 1100px; }
 .dash-header { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; }
 .dash-title { font-size:1.5rem;font-weight:800;color:var(--color-white);letter-spacing:-0.03em;margin:0; }
-.dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+.dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.62);margin:4px 0 0; }
 
 .btn-primary-action {
     background:var(--color-primary);color:var(--color-white);border:none;border-radius:8px;
@@ -128,7 +128,7 @@
     display:flex;align-items:center;justify-content:center;
     font-size:1.25rem;flex-shrink:0;
 }
-.kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
+.kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.72);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
 .kpi-value { font-size:2rem;font-weight:800;color:var(--color-white);line-height:1.1;margin:2px 0 0; }
 
 /* PROGRESS */
@@ -146,7 +146,7 @@
     height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-success));
     border-radius:100px;transition:width 1s ease;
 }
-.progress-sub { font-size:0.75rem;color:rgba(255,255,255,0.3);margin:0; }
+.progress-sub { font-size:0.75rem;color:rgba(255,255,255,0.62);margin:0; }
 
 /* CTA */
 .cta-banner {
@@ -156,7 +156,7 @@
     flex-wrap:wrap;gap:1rem;
 }
 .cta-title { font-size:0.95rem;font-weight:700;color:var(--color-white);margin:0 0 3px; }
-.cta-sub { font-size:0.78rem;color:rgba(255,255,255,0.35);margin:0; }
+.cta-sub { font-size:0.78rem;color:rgba(255,255,255,0.68);margin:0; }
 
 .fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
 @keyframes fadeIn { to { opacity:1;transform:translateY(0); } }

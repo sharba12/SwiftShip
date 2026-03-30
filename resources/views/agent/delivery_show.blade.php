@@ -58,7 +58,7 @@
         <div id="gps-alert" class="gps-alert" style="display:none;"></div>
 
         <div id="gps-status" class="mb-3">
-            <p style="color:rgba(255,255,255,0.5);">Enable GPS tracking to share your location with customers</p>
+            <p style="color:rgba(255,255,255,0.8);">Enable GPS tracking to share your location with customers</p>
         </div>
 
         <div class="d-flex gap-3 flex-wrap">
@@ -71,8 +71,8 @@
         </div>
 
         <div id="location-info" class="mt-3" style="display:none;">
-            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">Last updated: <span id="last-update" style="color:var(--color-success);">Never</span></p>
-            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">Coordinates: <span id="coordinates" style="color:rgba(255,255,255,0.7);">-</span></p>
+            <p style="color:rgba(255,255,255,0.72);font-size:0.82rem;">Last updated: <span id="last-update" style="color:var(--color-success);">Never</span></p>
+            <p style="color:rgba(255,255,255,0.72);font-size:0.82rem;">Coordinates: <span id="coordinates" style="color:rgba(255,255,255,0.7);">-</span></p>
         </div>
     </div>
     @endif
@@ -134,7 +134,7 @@
                 @endforeach
             </div>
         @else
-            <p style="color:rgba(255,255,255,0.35);">No timeline entries yet</p>
+            <p style="color:rgba(255,255,255,0.68);">No timeline entries yet</p>
         @endif
     </div>
 </div>
@@ -149,9 +149,9 @@
 }
 .card-heading { font-size:1.1rem;font-weight:700;color:var(--color-white);margin:0; }
 
-.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
 .field-value { font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
-.field-sub { font-size:0.78rem;color:rgba(255,255,255,0.4);margin:2px 0 0; }
+.field-sub { font-size:0.78rem;color:rgba(255,255,255,0.72);margin:2px 0 0; }
 
 .status-badge { padding:0.3rem 0.8rem;border-radius:100px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em; }
 .status-delivered { background:rgba(52,211,153,0.12);color:var(--color-success);border:1px solid rgba(52,211,153,0.25); }
@@ -159,12 +159,12 @@
 .status-transit { background:rgba(14,165,233,0.12);color:var(--color-primary);border:1px solid rgba(14,165,233,0.25); }
 .status-failed { background:rgba(248,113,113,0.12);color:var(--color-danger);border:1px solid rgba(248,113,113,0.25); }
 
-.form-label-dark { color:rgba(255,255,255,0.6);font-size:0.82rem;font-weight:600;margin-bottom:0.35rem;display:block; }
+.form-label-dark { color:rgba(255,255,255,0.86);font-size:0.82rem;font-weight:600;margin-bottom:0.35rem;display:block; }
 .form-control-dark {
     background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.1) !important;
     color:var(--color-white) !important;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.9rem;
 }
-.form-control-dark::placeholder { color:rgba(255,255,255,0.25) !important; }
+.form-control-dark::placeholder { color:rgba(255,255,255,0.58) !important; }
 .form-control-dark:focus { border-color:var(--color-primary) !important;box-shadow:0 0 0 3px rgba(14,165,233,0.12) !important; }
 .form-control-dark option { background:var(--color-slate-850);color:var(--color-white); }
 
@@ -198,8 +198,8 @@
 .timeline-dot { position:absolute;left:-1.5rem;top:3px;width:12px;height:12px;border-radius:50%;background:var(--color-slate-900);border:2px solid rgba(255,255,255,0.15); }
 .timeline-active .timeline-dot { background:var(--color-primary);border-color:var(--color-primary);box-shadow:0 0 8px rgba(14,165,233,0.5); }
 .timeline-status { color:rgba(255,255,255,0.85);font-weight:600;font-size:0.88rem;margin:0 0 2px; }
-.timeline-note { color:rgba(255,255,255,0.45);font-size:0.82rem;margin:2px 0 0; }
-.timeline-time { color:rgba(255,255,255,0.25);font-size:0.75rem;margin:4px 0 0; }
+.timeline-note { color:rgba(255,255,255,0.76);font-size:0.82rem;margin:2px 0 0; }
+.timeline-time { color:rgba(255,255,255,0.58);font-size:0.75rem;margin:4px 0 0; }
 
 .fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
 @keyframes fadeIn { to { opacity:1;transform:translateY(0); } }
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.geolocation.clearWatch(watchId);
             watchId = null;
         }
-        statusDiv.innerHTML = '<p style="color:rgba(255,255,255,0.5);">GPS Tracking Stopped</p>';
+        statusDiv.innerHTML = '<p style="color:rgba(255,255,255,0.8);">GPS Tracking Stopped</p>';
         startBtn.style.display = 'inline-flex';
         stopBtn.style.display = 'none';
     });

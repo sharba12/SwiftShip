@@ -37,7 +37,7 @@
         {{-- SIGNATURE --}}
         <div class="pod-card mt-3 fade-in" style="animation-delay:0.15s">
             <h5 class="card-heading mb-3">1. Customer Signature</h5>
-            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1rem;">Ask the customer to sign below:</p>
+            <p style="color:rgba(255,255,255,0.76);font-size:0.85rem;margin-bottom:1rem;">Ask the customer to sign below:</p>
 
             <div id="signature-container" style="border:2px solid rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;background:var(--color-white);position:relative;">
                 <canvas id="signature-pad" width="650" height="200" style="display:block;width:100%;cursor:crosshair;touch-action:none;" aria-label="Signature pad"></canvas>
@@ -47,7 +47,7 @@
                 <button type="button" id="clear-signature" class="btn-agent btn-agent-gray">
                     <i class="bi bi-eraser"></i> Clear
                 </button>
-                <span id="signature-status" style="color:rgba(255,255,255,0.3);font-size:0.78rem;">
+                <span id="signature-status" style="color:rgba(255,255,255,0.62);font-size:0.78rem;">
                     <i class="bi bi-info-circle"></i> Draw with finger or mouse
                 </span>
             </div>
@@ -61,7 +61,7 @@
         {{-- PHOTO --}}
         <div class="pod-card mt-3 fade-in" style="animation-delay:0.2s">
             <h5 class="card-heading mb-3">2. Delivery Photo</h5>
-            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1rem;">Take a photo of the delivered parcel:</p>
+            <p style="color:rgba(255,255,255,0.76);font-size:0.85rem;margin-bottom:1rem;">Take a photo of the delivered parcel:</p>
 
             <div class="text-center mb-3">
                 <video id="camera-preview" style="width:100%;max-width:400px;display:none;border-radius:10px;border:2px solid rgba(14,165,233,0.3);" autoplay playsinline muted></video>
@@ -101,7 +101,7 @@
         {{-- RECIPIENT --}}
         <div class="pod-card mt-3 fade-in" style="animation-delay:0.25s">
             <h5 class="card-heading mb-3">3. Confirm Recipient</h5>
-            <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1rem;">Enter the name of the person who received the parcel:</p>
+            <p style="color:rgba(255,255,255,0.76);font-size:0.85rem;margin-bottom:1rem;">Enter the name of the person who received the parcel:</p>
 
             <input type="text" name="recipient_name"
                    value="{{ old('recipient_name', $parcel->receiver_name) }}"
@@ -117,7 +117,7 @@
             <button type="submit" class="btn-agent btn-agent-green w-100 py-3" style="font-size:1rem;" id="submit-btn">
                 <i class="bi bi-check-circle"></i> Confirm Delivery with Proof
             </button>
-            <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;text-align:center;margin-top:0.5rem;">
+            <p style="color:rgba(255,255,255,0.62);font-size:0.78rem;text-align:center;margin-top:0.5rem;">
                 This will mark the parcel as delivered
             </p>
         </div>
@@ -129,18 +129,18 @@
 .back-link:hover { color:var(--color-primary-soft); }
 
 .page-title { font-size:1.5rem;font-weight:800;color:var(--color-white);margin:0; }
-.page-sub { font-size:0.82rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+.page-sub { font-size:0.82rem;color:rgba(255,255,255,0.62);margin:4px 0 0; }
 
 .pod-card { background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:1.5rem; }
 .card-heading { font-size:1rem;font-weight:700;color:var(--color-white);margin:0; }
-.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
 .field-value { font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
 
 .form-control-dark {
     background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.1) !important;
     color:var(--color-white) !important;border-radius:8px;padding:0.7rem 1rem;font-size:0.9rem;
 }
-.form-control-dark::placeholder { color:rgba(255,255,255,0.25) !important; }
+.form-control-dark::placeholder { color:rgba(255,255,255,0.58) !important; }
 .form-control-dark:focus { border-color:var(--color-primary) !important;box-shadow:0 0 0 3px rgba(14,165,233,0.12) !important; }
 
 .btn-agent { border:none;border-radius:8px;padding:0.55rem 1rem;font-size:0.85rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;transition:all 0.2s;text-decoration:none; }
@@ -150,7 +150,7 @@
 .btn-agent-green:hover { background:var(--color-success-deep);color:var(--color-white); }
 .btn-agent-purple { background:var(--color-violet-deep);color:var(--color-white); }
 .btn-agent-purple:hover { background:var(--color-violet-ink);color:var(--color-white); }
-.btn-agent-gray { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1); }
+.btn-agent-gray { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.86);border:1px solid rgba(255,255,255,0.1); }
 .btn-agent-gray:hover { background:rgba(255,255,255,0.1);color:var(--color-white); }
 
 .pod-alert {
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         signatureInput.value = '';
         hasSignature = false;
         signatureStatus.innerHTML = '<i class="bi bi-info-circle"></i> Draw with finger or mouse';
-        signatureStatus.style.color = 'rgba(255,255,255,0.3)';
+        signatureStatus.style.color = 'rgba(255,255,255,0.62)';
     });
 
     startCameraBtn.addEventListener('click', async () => {

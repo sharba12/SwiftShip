@@ -87,14 +87,14 @@
                     @foreach($parcels as $parcel)
                     <tr class="table-row">
                         <td class="td-cell">
-                            <span style="color:var(--color-primary);font-weight:600;">{{ $parcel->tracking_id }}</span>
+                            <span style="color:#1d4ed8;font-weight:700;">{{ $parcel->tracking_id }}</span>
                         </td>
                         <td class="td-cell">
-                            <div style="color:rgba(255,255,255,0.85);font-weight:600;">{{ $parcel->receiver_name }}</div>
-                            <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;">{{ $parcel->receiver_contact }}</div>
+                            <div style="color:#0f172a;font-weight:700;">{{ $parcel->receiver_name }}</div>
+                            <div style="color:#334155;font-size:0.78rem;">{{ $parcel->receiver_contact }}</div>
                         </td>
                         <td class="td-cell">
-                            <div style="color:rgba(255,255,255,0.7);max-width:200px;" class="text-truncate" title="{{ $parcel->address_to }}">
+                            <div class="destination-text" title="{{ $parcel->address_to }}">
                                 {{ $parcel->address_to }}
                             </div>
                         </td>
@@ -108,7 +108,7 @@
                                 {{ ucfirst(str_replace('_', ' ', $parcel->status)) }}
                             </span>
                         </td>
-                        <td class="td-cell" style="color:rgba(255,255,255,0.7);">{{ $parcel->weight }} kg</td>
+                        <td class="td-cell" style="color:#1e3a8a;font-weight:600;">{{ $parcel->weight }} kg</td>
                         <td class="td-cell">
                             <a href="{{ route('agent.delivery.show', $parcel->id) }}" class="action-link">
                                 View Details <i class="bi bi-arrow-right"></i>
@@ -122,8 +122,8 @@
         @else
         <div style="padding:3rem;text-align:center;">
             <i class="bi bi-inbox" style="font-size:2.5rem;color:rgba(255,255,255,0.15);"></i>
-            <p style="color:rgba(255,255,255,0.4);margin:1rem 0 0;font-size:0.9rem;">No deliveries assigned yet</p>
-            <p style="color:rgba(255,255,255,0.25);font-size:0.82rem;">Check back later for new assignments</p>
+            <p style="color:rgba(255,255,255,0.72);margin:1rem 0 0;font-size:0.9rem;">No deliveries assigned yet</p>
+            <p style="color:rgba(255,255,255,0.58);font-size:0.82rem;">Check back later for new assignments</p>
         </div>
         @endif
     </div>
@@ -133,7 +133,7 @@
 <style>
 .dash-header { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; }
 .dash-title { font-size:1.5rem;font-weight:800;color:var(--color-white);letter-spacing:-0.03em;margin:0; }
-.dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+.dash-sub { font-size:0.78rem;color:rgba(255,255,255,0.62);margin:4px 0 0; }
 
 /* KPI */
 .kpi-card {
@@ -146,18 +146,28 @@
 .kpi-card:hover { transform:translateY(-4px);border-color:rgba(255,255,255,0.14); }
 .kpi-bar { position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0.5; }
 .kpi-icon-wrap { width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0; }
-.kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
+.kpi-label { font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.72);text-transform:uppercase;letter-spacing:0.08em;margin:0; }
 .kpi-value { font-size:2rem;font-weight:800;color:var(--color-white);line-height:1.1;margin:2px 0 0; }
 
 /* TABLE */
 .table-card { background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden; }
+.table-card .table {
+    --bs-table-bg: #f8fafc;
+    --bs-table-color: #1e293b;
+    --bs-table-striped-bg: #f1f5f9;
+    --bs-table-striped-color: #1e293b;
+    --bs-table-hover-bg: #e2e8f0;
+    --bs-table-hover-color: #0f172a;
+}
+.table-card .table > :not(caption) > * > * { background-color: transparent !important; }
 .table-card-head { padding:1.1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.06); }
 .table-card-title { font-size:0.95rem;font-weight:700;color:var(--color-white);margin:0; }
-.table-head-row { background:rgba(255,255,255,0.03); }
-.th-cell { padding:0.8rem 1rem !important;font-weight:600;color:rgba(255,255,255,0.4);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid rgba(255,255,255,0.06) !important; }
+.table-head-row { background:#e2e8f0; }
+.th-cell { padding:0.8rem 1rem !important;font-weight:700;color:#1e3a8a;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid #cbd5e1 !important; }
 .table-row { transition:background 0.15s; }
-.table-row:hover { background:rgba(255,255,255,0.03) !important; }
-.td-cell { padding:0.8rem 1rem !important;vertical-align:middle;border-bottom:1px solid rgba(255,255,255,0.04) !important; }
+.table-row:hover { background:#e2e8f0 !important; }
+.td-cell { padding:0.8rem 1rem !important;vertical-align:middle;border-bottom:1px solid #e2e8f0 !important;color:#1e293b; }
+.destination-text { color:#1e3a8a;white-space:normal;word-break:break-word;line-height:1.35;font-weight:600; }
 
 /* STATUS */
 .status-pill { padding:0.25rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em; }
@@ -166,8 +176,8 @@
 .sp-transit { background:rgba(14,165,233,0.12);color:var(--color-primary); }
 .sp-failed { background:rgba(248,113,113,0.12);color:var(--color-danger); }
 
-.action-link { color:var(--color-primary);font-size:0.82rem;font-weight:600;text-decoration:none;transition:color 0.2s; }
-.action-link:hover { color:var(--color-primary-soft); }
+.action-link { color:#1d4ed8;font-size:0.82rem;font-weight:700;text-decoration:none;transition:color 0.2s; }
+.action-link:hover { color:#1e3a8a; }
 
 .fade-in { opacity:0;transform:translateY(16px);animation:fadeIn 0.6s ease forwards; }
 @keyframes fadeIn { to { opacity:1;transform:translateY(0); } }

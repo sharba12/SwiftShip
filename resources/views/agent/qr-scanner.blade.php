@@ -28,11 +28,11 @@
 
         <div id="scan-status" class="mt-3 text-center" style="display:none;">
             <p style="color:var(--color-success);font-weight:600;">Ready to scan...</p>
-            <p style="color:rgba(255,255,255,0.35);font-size:0.82rem;">Position the QR code within the frame</p>
+            <p style="color:rgba(255,255,255,0.68);font-size:0.82rem;">Position the QR code within the frame</p>
         </div>
 
         <hr style="border-color:rgba(255,255,255,0.07);margin:1.5rem 0;">
-        <p style="color:rgba(255,255,255,0.6);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Or enter tracking ID manually:</p>
+        <p style="color:rgba(255,255,255,0.86);font-weight:600;font-size:0.85rem;margin-bottom:0.5rem;">Or enter tracking ID manually:</p>
         <div class="d-flex gap-2">
             <input type="text" id="manual-tracking-id" placeholder="Enter tracking ID" class="form-control form-control-dark flex-fill">
             <button id="manual-submit" class="btn-agent btn-agent-blue">Submit</button>
@@ -93,28 +93,28 @@
     <div class="scanner-card mt-3 fade-in" style="animation-delay:0.12s">
         <h5 style="color:var(--color-white);font-weight:700;margin:0 0 1rem;">Recent Scans</h5>
         <div id="recent-scans">
-            <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;">No recent scans</p>
+            <p style="color:rgba(255,255,255,0.68);font-size:0.85rem;">No recent scans</p>
         </div>
     </div>
 </div>
 
 <style>
 .page-title { font-size:1.5rem;font-weight:800;color:var(--color-white);margin:0; }
-.page-sub { font-size:0.82rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+.page-sub { font-size:0.82rem;color:rgba(255,255,255,0.62);margin:4px 0 0; }
 
 .scanner-card {
     background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
     border-radius:14px;padding:1.5rem;
 }
 
-.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.field-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
 .field-value { font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
 
 .form-control-dark {
     background:rgba(255,255,255,0.05) !important;border:1px solid rgba(255,255,255,0.1) !important;
     color:var(--color-white) !important;border-radius:8px;padding:0.6rem 0.85rem;font-size:0.9rem;
 }
-.form-control-dark::placeholder { color:rgba(255,255,255,0.25) !important; }
+.form-control-dark::placeholder { color:rgba(255,255,255,0.58) !important; }
 .form-control-dark:focus { border-color:var(--color-primary) !important;box-shadow:0 0 0 3px rgba(14,165,233,0.12) !important; }
 
 .btn-agent { border:none;border-radius:8px;padding:0.55rem 1rem;font-size:0.85rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;transition:all 0.2s;text-decoration:none; }
@@ -126,7 +126,7 @@
 .btn-agent-red:hover { background:rgba(239,68,68,0.25); }
 .btn-agent-yellow { background:rgba(251,191,36,0.15);color:var(--color-warning);border:1px solid rgba(251,191,36,0.25); }
 .btn-agent-yellow:hover { background:rgba(251,191,36,0.25); }
-.btn-agent-gray { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1); }
+.btn-agent-gray { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.86);border:1px solid rgba(255,255,255,0.1); }
 .btn-agent-gray:hover { background:rgba(255,255,255,0.1);color:var(--color-white); }
 
 .status-pill { padding:0.25rem 0.7rem;border-radius:100px;font-size:0.7rem;font-weight:700;text-transform:uppercase; }
@@ -339,16 +339,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateRecentScans() {
         const c = document.getElementById('recent-scans');
         if (!recentScans.length) {
-            c.innerHTML = '<p style="color:rgba(255,255,255,0.35);font-size:0.85rem;">No recent scans</p>';
+            c.innerHTML = '<p style="color:rgba(255,255,255,0.68);font-size:0.85rem;">No recent scans</p>';
             return;
         }
         c.innerHTML = recentScans.map((s) => `
             <div class="recent-scan-item">
                 <div>
                     <p style="color:var(--color-primary);font-weight:600;font-size:0.85rem;margin:0;">${s.tracking_id}</p>
-                    <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin:0;">${s.receiver}</p>
+                    <p style="color:rgba(255,255,255,0.72);font-size:0.75rem;margin:0;">${s.receiver}</p>
                 </div>
-                <span style="color:rgba(255,255,255,0.3);font-size:0.75rem;">${s.time}</span>
+                <span style="color:rgba(255,255,255,0.62);font-size:0.75rem;">${s.time}</span>
             </div>
         `).join('');
     }

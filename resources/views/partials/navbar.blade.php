@@ -2,7 +2,21 @@
     <div class="container">
         <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-            <img src="{{ asset('images/swiftship-logo.svg') }}" alt="SwiftShip logo" class="brand-logo">
+            <svg class="brand-logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <rect width="64" height="64" rx="14" fill="#0f172a"></rect>
+                <path d="M8 32L26 14L56 32L26 50L8 32Z" fill="url(#navLogoBlue)"></path>
+                <path d="M18 32L33 22L49 32L33 42L18 32Z" fill="url(#navLogoAmber)"></path>
+                <defs>
+                    <linearGradient id="navLogoBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#38bdf8"></stop>
+                        <stop offset="100%" stop-color="#0284c7"></stop>
+                    </linearGradient>
+                    <linearGradient id="navLogoAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fbbf24"></stop>
+                        <stop offset="100%" stop-color="#f59e0b"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>
             <span class="brand-text">Swift<span class="brand-accent">Ship</span></span>
         </a>
 

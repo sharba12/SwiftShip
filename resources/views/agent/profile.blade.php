@@ -79,7 +79,7 @@
 
 <style>
 .profile-title { font-size:1.5rem;font-weight:800;color:var(--color-white);letter-spacing:-0.03em;margin:0; }
-.profile-sub { font-size:0.78rem;color:rgba(255,255,255,0.3);margin:4px 0 0; }
+.profile-sub { font-size:0.78rem;color:rgba(255,255,255,0.62);margin:4px 0 0; }
 
 .profile-card {
     background:rgba(255,255,255,0.04);
@@ -128,7 +128,7 @@
 .profile-info-item i {
     font-size:1.1rem;color:var(--color-primary);margin-top:2px;flex-shrink:0;
 }
-.info-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
+.info-label { font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:0.08em;margin:0 0 2px; }
 .info-value { font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.85);margin:0; }
 
 .profile-actions {

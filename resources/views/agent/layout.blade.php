@@ -27,7 +27,7 @@
         --accent: var(--color-primary);
         --accent-green: var(--color-success);
         --content-bg: var(--color-bg-panel);
-        --text-muted-s: rgba(255,255,255,0.4);
+        --text-muted-s: rgba(255,255,255,0.72);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -90,7 +90,7 @@
         gap: 0.65rem;
         padding: 0.62rem 0.85rem;
         border-radius: 8px;
-        color: rgba(255,255,255,0.5);
+        color: rgba(255,255,255,0.8);
         text-decoration: none;
         font-size: 0.875rem;
         font-weight: 500;
