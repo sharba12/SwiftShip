@@ -378,7 +378,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     const map = L.map('parcel-map', { zoomControl: true }).setView([20.5937, 78.9629], 5);
-    document.getElementById('parcel-map').style.background = '#0f172a';
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+    }).addTo(map);
 
     fetch('{{ route("parcel.location", $parcel->id) }}')
         .then(r=>r.json())

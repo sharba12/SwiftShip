@@ -307,7 +307,9 @@ document.addEventListener('DOMContentLoaded', function(){
     const initialLng = {{ $parcel->current_lng ?? 76.3125 }};
 
     const map = L.map('map', { zoomControl: true }).setView([initialLat, initialLng], 13);
-    document.getElementById('map').style.background = '#0f172a';
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+    }).addTo(map);
 
     const icon = L.divIcon({
         html: '<div style="width:14px;height:14px;background:var(--color-primary);border:3px solid var(--color-white);border-radius:50%;box-shadow:0 0 12px rgba(14,165,233,0.8);"></div>',
